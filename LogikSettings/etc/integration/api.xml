@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<integrations>
+    <integration name="logik">
+        <resources>
+            <resource name="Magento_Backend::admin" />
+            <resource name="Magento_Catalog::catalog" />
+            <resource name="Magento_Catalog::products" />
+        </resources>
+    </integration>
+</integrations> 

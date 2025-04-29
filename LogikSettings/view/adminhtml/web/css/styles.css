@@ -1,0 +1,22 @@
+.integration-token-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1rem;
+}
+
+.integration-token-input {
+    flex: 1;
+    max-width: 450px;
+    padding: 6px 8px;
+    background: #fff;
+    border: 1px solid #adadad;
+    border-radius: 1px;
+    font-family: monospace;
+}
+
+.toggle-token {
+    min-width: 120px;
+    height: 33px;
+    padding: 0 1rem;
+} 

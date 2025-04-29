@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Integration:etc/integration/config.xsd">
+    <integration name="logik">
+        <email>logik@example.com</email>
+        <endpoint_url>https://example.com/endpoint</endpoint_url>
+        <identity_link_url>https://example.com/identity</identity_link_url>
+    </integration>
+</config> 

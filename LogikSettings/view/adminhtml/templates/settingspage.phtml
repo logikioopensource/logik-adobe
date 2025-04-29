@@ -1,0 +1,74 @@
+<form action="<?= $block->getUrl('logiksettings/settingspage/save') ?>" method="post" id="logik-settings-form">
+    <div class="field">
+        <label for="logik_url" class="label">Logik URL</label>
+        <div class="control">
+            <input type="text" 
+                   id="logik_url" 
+                   name="logik_url" 
+                   class="input scalable" 
+                   value="<?= $block->escapeHtmlAttr($block->getLogikUrl()) ?>"
+                   data-validate="{'required':true, 'url':true}">
+            <div class="field-error" style="display: none;"></div>
+        </div>
+    </div>
+    <div class="field">
+        <label for="logik_runtime_token" class="label">Logik Runtime Token</label>
+        <div class="control">
+            <input type="text"
+                   id="logik_runtime_token"
+                   name="logik_runtime_token"
+                   class="input scalable"
+                   value="<?= $block->escapeHtmlAttr($block->getLogikRuntimeToken()) ?>"
+                   data-validate="{'required':true}">
+            <div class="field-error" style="display: none;"></div>
+        </div>
+    </div>
+    <?php if ($block->getIntegrationToken()): ?>
+    <div class="field">
+        <label for="integration_token" class="label">Integration Token</label>
+        <div class="control integration-token-wrapper">
+            <input type="password" 
+                   id="integration_token" 
+                   class="integration-token-input" 
+                   value="<?= $block->escapeHtmlAttr($block->getIntegrationToken()) ?>" 
+                   readonly="readonly">
+            <button type="button" 
+                    class="action-default scalable toggle-token" 
+                    data-mage-init='{"Logik_LogikSettings/js/toggle-token": {}}'>
+                <span>Show Token</span>
+            </button>
+        </div>
+    </div>
+    <?php endif; ?>
+    <?= $block->getBlockHtml('formkey') ?>
+    <div class="actions">
+        <button type="submit" class="action primary">Save</button>
+        <button type="button" 
+                id="test-credentials" 
+                class="action secondary"
+                data-mage-init='{"Logik_LogikSettings/js/test-credentials": {}}'>
+            <span>Test Credentials</span>
+        </button>
+    </div>
+</form>
+
+<script>
+    require([
+        'jquery'
+    ], function ($) {
+        'use strict';
+        
+        // Add a success message handler
+        $(document).on('submit', '#logik-settings-form', function() {
+            // Show a loading message
+            $('body').trigger('processStart');
+        });
+        
+        // Force a page reload after successful save
+        if (window.location.href.indexOf('saved=1') > -1) {
+            setTimeout(function() {
+                window.location.reload();
+            }, 1000);
+        }
+    });
+</script>
