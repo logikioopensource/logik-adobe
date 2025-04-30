@@ -34,17 +34,17 @@ class SettingsPage extends Template
         $logger->addWriter($writer);
         $logger->info('getLogikUrl called');
         
-        return $this->scopeConfig->getValue('logik/general/url', ScopeInterface::SCOPE_STORE);
+        return $this->scopeConfig->getValue('logik_settings/general/logik_url', ScopeInterface::SCOPE_STORE);
     }
 
-    public function getRuntimeToken()
+    public function getLogikRuntimeToken()
     {
         $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/logik_settings.log');
         $logger = new \Zend_Log();
         $logger->addWriter($writer);
-        $logger->info('getRuntimeToken called');
+        $logger->info('getLogikRuntimeToken called');
         
-        return $this->scopeConfig->getValue('logik/general/runtime_token', ScopeInterface::SCOPE_STORE);
+        return $this->scopeConfig->getValue('logik_settings/general/logik_runtime_token', ScopeInterface::SCOPE_STORE);
     }
 
     public function getIntegrationToken()
@@ -54,6 +54,6 @@ class SettingsPage extends Template
         $logger->addWriter($writer);
         $logger->info('getIntegrationToken called');
         
-        return $this->scopeConfig->getValue('logik/general/integration_token', ScopeInterface::SCOPE_STORE);
+        return $this->scopeConfig->getValue('logik_settings/general/integration_token', ScopeInterface::SCOPE_STORE);
     }
 } 
