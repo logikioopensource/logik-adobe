@@ -6,53 +6,54 @@ namespace Logik\Logik\Block\Adminhtml;
 use Magento\Backend\Block\Template;
 use Magento\Backend\Block\Template\Context;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\ScopeInterface;
 
 class SettingsPage extends Template
 {
-    protected ScopeConfigInterface $scopeConfig;
+    protected $scopeConfig;
 
     public function __construct(
         Context $context,
         ScopeConfigInterface $scopeConfig,
         array $data = []
     ) {
-        parent::__construct($context, $data);
+        // Add detailed logging
+        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/logik_settings.log');
+        $logger = new \Zend_Log();
+        $logger->addWriter($writer);
+        $logger->info('SettingsPage block constructor called');
+        
         $this->scopeConfig = $scopeConfig;
+        parent::__construct($context, $data);
     }
 
     public function getLogikUrl()
     {
-        $value = $this->scopeConfig->getValue(
-            'logik_settings/general/logik_url',
-            \Magento\Framework\App\Config\ScopeConfigInterface::SCOPE_TYPE_DEFAULT
-        );
-        // Add debugging
         $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/logik_settings.log');
         $logger = new \Zend_Log();
         $logger->addWriter($writer);
-        $logger->info('Getting logik_url value: ' . ($value ?: 'null'));
-        return $value;
+        $logger->info('getLogikUrl called');
+        
+        return $this->scopeConfig->getValue('logik/general/url', ScopeInterface::SCOPE_STORE);
     }
 
-    public function getLogikRuntimeToken()
+    public function getRuntimeToken()
     {
-        $value = $this->scopeConfig->getValue(
-            'logik_settings/general/logik_runtime_token',
-            \Magento\Framework\App\Config\ScopeConfigInterface::SCOPE_TYPE_DEFAULT
-        );
-        // Add debugging
         $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/logik_settings.log');
         $logger = new \Zend_Log();
         $logger->addWriter($writer);
-        $logger->info('Getting logik_runtime_token value: ' . ($value ?: 'null'));
-        return $value;
+        $logger->info('getRuntimeToken called');
+        
+        return $this->scopeConfig->getValue('logik/general/runtime_token', ScopeInterface::SCOPE_STORE);
     }
 
     public function getIntegrationToken()
     {
-        return $this->scopeConfig->getValue(
-            'logik_settings/general/integration_token',
-            \Magento\Framework\App\Config\ScopeConfigInterface::SCOPE_TYPE_DEFAULT
-        );
+        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/logik_settings.log');
+        $logger = new \Zend_Log();
+        $logger->addWriter($writer);
+        $logger->info('getIntegrationToken called');
+        
+        return $this->scopeConfig->getValue('logik/general/integration_token', ScopeInterface::SCOPE_STORE);
     }
 } 
