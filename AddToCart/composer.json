@@ -34,7 +34,7 @@
         "registration.php"
       ],
       "psr-4": {
-        "Logik\\LogikSettings\\": ""
+        "Logik\\AddToCart\\": ""
       }
     },
     "minimum-stability": "stable",
