@@ -1,0 +1,45 @@
+{
+    "name": "logik/module-logik-add-to-cart",
+    "version": "1.0.0",
+    "description": "Logik addToCart Module for Magento 2",
+    "type": "magento2-module",
+    "keywords": [
+      "magento2",
+      "module",
+      "logik",
+      "addToCart"
+    ],
+    "homepage": "https://logik.io",
+    "authors": [
+      {
+        "name": "Logik",
+        "email": "support@logik.io"
+      }
+    ],
+    "require": {
+      "php": "8.3.*",
+      "magento/framework": "*",
+      "magento/module-admin-gws": "100.4.*",
+      "magento/module-adobe-stock-admin-ui": "1.3.*"
+    },
+    "require-dev": {
+      "phpunit/phpunit": "^9.0",
+      "magento/magento2-functional-testing-framework": "^3.0"
+    },
+    "license": [
+      "Proprietary"
+    ],
+    "autoload": {
+      "files": [
+        "registration.php"
+      ],
+      "psr-4": {
+        "Logik\\LogikSettings\\": ""
+      }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "config": {
+      "sort-packages": true
+    }
+  }
