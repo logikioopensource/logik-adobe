@@ -3,19 +3,55 @@
     "description": "Logik Magento 2 Packages",
     "type": "composer",
     "license": "Proprietary",
-    "repositories": [
-        {
-            "type": "path",
-            "url": "./LogikSettings"
+    "packages": {
+        "logik/module-logik-settings": {
+            "1.0.0": {
+                "name": "logik/module-logik-settings",
+                "version": "1.0.0",
+                "type": "magento2-module",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/logikioopensource/logik-adobe.git",
+                    "reference": "master"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://github.com/logikioopensource/logik-adobe/archive/master.zip"
+                },
+                "autoload": {
+                    "files": [
+                        "LogikSettings/registration.php"
+                    ],
+                    "psr-4": {
+                        "Logik\\LogikSettings\\": "LogikSettings/"
+                    }
+                }
+            }
         },
-        {
-            "type": "path",
-            "url": "./AddToCart"
+        "logik/module-logik-add-to-cart": {
+            "1.0.0": {
+                "name": "logik/module-logik-add-to-cart",
+                "version": "1.0.0",
+                "type": "magento2-module",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/logikioopensource/logik-adobe.git",
+                    "reference": "master"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://github.com/logikioopensource/logik-adobe/archive/master.zip"
+                },
+                "autoload": {
+                    "files": [
+                        "AddToCart/registration.php"
+                    ],
+                    "psr-4": {
+                        "Logik\\AddToCart\\": "AddToCart/"
+                    }
+                }
+            }
         }
-    ],
-    "require": {
-        "logik/module-logik-settings": "*",
-        "logik/module-logik-add-to-cart": "*"
     },
     "minimum-stability": "stable",
     "prefer-stable": true
