@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
-        <css src="Logik_LogikSettings::css/styles.css"/>
+        <css src="Logik_Logik::css/styles.css"/>
     </head>
     <body>
         <referenceContainer name="js">
-            <block class="Magento\Backend\Block\Template" template="Logik_LogikSettings::js.phtml"/>
+            <block class="Magento\Backend\Block\Template" template="Logik_Logik::js.phtml"/>
         </referenceContainer>
     </body>
 </page> 

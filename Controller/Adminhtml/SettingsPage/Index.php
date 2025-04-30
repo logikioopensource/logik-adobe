@@ -17,7 +17,7 @@ use Magento\Framework\View\Result\PageFactory;
  */
 class Index extends Action implements HttpGetActionInterface
 {
-    const MENU_ID = 'Logik_LogikSettings::logik_settingspage';
+    const MENU_ID = 'Logik_Logik::logik_settingspage';
 
     /**
      * @var PageFactory

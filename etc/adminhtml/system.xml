@@ -7,7 +7,7 @@
         <section id="logik_settings" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
             <label>Logik Settings</label>
             <tab>logik</tab>
-            <resource>Logik_LogikSettings::config</resource>
+            <resource>Logik_Logik::config</resource>
             <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>General Configuration</label>
                 <field id="logik_url" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">

@@ -13,7 +13,7 @@
         </exclude>
     </coverage>
     <testsuites>
-        <testsuite name="Logik_LogikSettings Unit Tests">
+        <testsuite name="Logik_Logik Unit Tests">
             <directory suffix="Test.php">.</directory>
         </testsuite>
     </testsuites>
