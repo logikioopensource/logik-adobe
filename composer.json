@@ -1,0 +1,22 @@
+{
+    "name": "logik/magento2-packages",
+    "description": "Logik Magento 2 Packages",
+    "type": "composer",
+    "license": "Proprietary",
+    "repositories": [
+        {
+            "type": "path",
+            "url": "./LogikSettings"
+        },
+        {
+            "type": "path",
+            "url": "./AddToCart"
+        }
+    ],
+    "require": {
+        "logik/module-logik-settings": "*",
+        "logik/module-logik-add-to-cart": "*"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+} 
