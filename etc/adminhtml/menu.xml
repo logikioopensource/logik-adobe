@@ -2,6 +2,6 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
         <add id="Logik_Logik::logik" title="Logik" translate="title" module="Logik_Logik" sortOrder="50" parent="Magento_Backend::stores" resource="Logik_Logik::logik"/>
-        <add id="Logik_Logik::logik_settingspage" title="Credentials" translate="title" module="Logik_Logik" sortOrder="10" parent="Logik_Logik::logik" action="logik/settingspage" resource="Logik_Logik::logik_settingspage"/>
+        <add id="Logik_Logik::logik_settingspage" title="Credentials" translate="title" module="Logik_Logik" sortOrder="10" parent="Logik_Logik::logik" action="logiksettings/settingspage" resource="Logik_Logik::logik_settingspage"/>
     </menu>
 </config>
