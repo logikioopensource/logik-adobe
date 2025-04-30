@@ -6,22 +6,14 @@
     "repositories": [
         {
             "type": "path",
-            "url": "./LogikSettings",
-            "options": {
-                "symlink": true
-            }
-        },
-        {
-            "type": "path",
-            "url": "./AddToCart",
+            "url": ".",
             "options": {
                 "symlink": true
             }
         }
     ],
     "require": {
-        "logik/module-logik-settings": "*",
-        "logik/module-logik-add-to-cart": "*"
+        "logik/module-logik": "1.0.0"
     },
     "minimum-stability": "stable",
     "prefer-stable": true
