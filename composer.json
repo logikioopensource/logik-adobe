@@ -1,22 +1,23 @@
 {
     "name": "logik/magento2-packages",
     "description": "Logik Magento 2 Packages",
-    "type": "composer",
+    "type": "project",
     "license": "Proprietary",
-    "packages": {
-        "logik/module-logik-settings": {
-            "1.0.0": {
+    "require": {
+        "logik/module-logik-settings": "dev-master",
+        "logik/module-logik-add-to-cart": "dev-master"
+    },
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
                 "name": "logik/module-logik-settings",
-                "version": "1.0.0",
+                "version": "dev-master",
                 "type": "magento2-module",
                 "source": {
                     "type": "git",
                     "url": "https://github.com/logikioopensource/logik-adobe.git",
                     "reference": "master"
-                },
-                "dist": {
-                    "type": "zip",
-                    "url": "https://github.com/logikioopensource/logik-adobe/archive/master.zip"
                 },
                 "autoload": {
                     "files": [
@@ -28,19 +29,16 @@
                 }
             }
         },
-        "logik/module-logik-add-to-cart": {
-            "1.0.0": {
+        {
+            "type": "package",
+            "package": {
                 "name": "logik/module-logik-add-to-cart",
-                "version": "1.0.0",
+                "version": "dev-master",
                 "type": "magento2-module",
                 "source": {
                     "type": "git",
                     "url": "https://github.com/logikioopensource/logik-adobe.git",
                     "reference": "master"
-                },
-                "dist": {
-                    "type": "zip",
-                    "url": "https://github.com/logikioopensource/logik-adobe/archive/master.zip"
                 },
                 "autoload": {
                     "files": [
@@ -52,7 +50,7 @@
                 }
             }
         }
-    },
-    "minimum-stability": "stable",
+    ],
+    "minimum-stability": "dev",
     "prefer-stable": true
 } 
