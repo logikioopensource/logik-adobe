@@ -1,56 +1,24 @@
 {
     "name": "logik/magento2-packages",
     "description": "Logik Magento 2 Packages",
-    "type": "project",
+    "type": "magento2-module",
     "license": "Proprietary",
     "require": {
-        "logik/module-logik-settings": "dev-master",
-        "logik/module-logik-add-to-cart": "dev-master"
+        "php": ">=8.2.0",
+        "magento/framework": "*",
+        "magento/module-admin-gws": "100.4.*",
+        "magento/module-adobe-stock-admin-ui": "1.3.*"
     },
-    "repositories": [
-        {
-            "type": "package",
-            "package": {
-                "name": "logik/module-logik-settings",
-                "version": "dev-master",
-                "type": "magento2-module",
-                "source": {
-                    "type": "git",
-                    "url": "https://github.com/logikioopensource/logik-adobe.git",
-                    "reference": "master"
-                },
-                "autoload": {
-                    "files": [
-                        "LogikSettings/registration.php"
-                    ],
-                    "psr-4": {
-                        "Logik\\LogikSettings\\": "LogikSettings/"
-                    }
-                }
-            }
-        },
-        {
-            "type": "package",
-            "package": {
-                "name": "logik/module-logik-add-to-cart",
-                "version": "dev-master",
-                "type": "magento2-module",
-                "source": {
-                    "type": "git",
-                    "url": "https://github.com/logikioopensource/logik-adobe.git",
-                    "reference": "master"
-                },
-                "autoload": {
-                    "files": [
-                        "AddToCart/registration.php"
-                    ],
-                    "psr-4": {
-                        "Logik\\AddToCart\\": "AddToCart/"
-                    }
-                }
-            }
+    "autoload": {
+        "files": [
+            "LogikSettings/registration.php",
+            "AddToCart/registration.php"
+        ],
+        "psr-4": {
+            "Logik\\LogikSettings\\": "LogikSettings/",
+            "Logik\\AddToCart\\": "AddToCart/"
         }
-    ],
-    "minimum-stability": "dev",
+    },
+    "minimum-stability": "stable",
     "prefer-stable": true
 } 
