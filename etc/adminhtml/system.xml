@@ -18,7 +18,7 @@
                 </field>
                 <field id="integration_token" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Integration Token</label>
-                    <frontend_model>Logik\LogikSettings\Block\Adminhtml\Form\Field\IntegrationToken</frontend_model>
+                    <frontend_model>Logik\Logik\Block\Adminhtml\Form\Field\IntegrationToken</frontend_model>
                     <comment>This is your integration token. Click the button to reveal it.</comment>
                 </field>
             </group>
