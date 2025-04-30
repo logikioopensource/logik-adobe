@@ -6,11 +6,17 @@
     "repositories": [
         {
             "type": "path",
-            "url": "./LogikSettings"
+            "url": "./LogikSettings",
+            "options": {
+                "symlink": true
+            }
         },
         {
             "type": "path",
-            "url": "./AddToCart"
+            "url": "./AddToCart",
+            "options": {
+                "symlink": true
+            }
         }
     ],
     "require": {
