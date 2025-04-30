@@ -1,3 +1,11 @@
+<?php
+// Debug logging
+$writer = new \Zend_Log_Writer_Stream(BP . '/var/log/logik_settings.log');
+$logger = new \Zend_Log();
+$logger->addWriter($writer);
+$logger->info('Settings page template loaded');
+?>
+
 <form action="<?= $block->getUrl('logiksettings/settingspage/save') ?>" method="post" id="logik-settings-form">
     <div class="field">
         <label for="logik_url" class="label">Logik URL</label>
