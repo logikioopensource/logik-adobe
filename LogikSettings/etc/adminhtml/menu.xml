@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
-    <menu>
-        <add id="Logik_LogikSettings::logik" title="Logik" translate="title" module="Logik_LogikSettings" sortOrder="50" parent="Magento_Backend::stores" resource="Logik_LogikSettings::logik"/>
-        <add id="Logik_LogikSettings::logik_settingspage" title="Credentials" translate="title" module="Logik_LogikSettings" sortOrder="10" parent="Logik_LogikSettings::logik" action="logiksettings/settingspage" resource="Logik_LogikSettings::logik_settingspage"/>
-    </menu>
-</config>

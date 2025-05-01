@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!-- Debug: Layout file loaded -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Logik_Logik::css/styles.css"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Logik\Logik\Block\Adminhtml\SettingsPage" 
+                   name="logik_settings_page" 
+                   template="Logik_Logik::settingspage.phtml"/>
+        </referenceContainer>
+        <referenceContainer name="js">
+            <block class="Magento\Backend\Block\Template" 
+                   template="Logik_Logik::js.phtml"/>
+        </referenceContainer>
+        <referenceContainer name="before.body.end">
+            <block class="Magento\Backend\Block\Template" 
+                   template="Logik_Logik::form-validation.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

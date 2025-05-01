@@ -1,28 +1,42 @@
 {
     "name": "logik/magento2-packages",
     "description": "Logik Magento 2 Packages",
-    "type": "composer",
+    "type": "magento2-module",
     "license": "Proprietary",
     "repositories": [
         {
             "type": "path",
-            "url": "./LogikSettings",
-            "options": {
-                "symlink": true
-            }
-        },
-        {
-            "type": "path",
-            "url": "./AddToCart",
+            "url": ".",
             "options": {
                 "symlink": true
             }
         }
     ],
     "require": {
-        "logik/module-logik-settings": "*",
-        "logik/module-logik-add-to-cart": "*"
+        "php": ">=8.2.0",
+        "magento/framework": "*",
+        "magento/module-admin-gws": "100.4.*",
+        "magento/module-adobe-stock-admin-ui": "1.3.*",
+        "magento/module-commerce-backend-uix": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0",
+        "magento/magento2-functional-testing-framework": "^3.0"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Logik\\Logik\\": ""
+        }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "magento-deploystrategy": "copy"
+    }
 } 
