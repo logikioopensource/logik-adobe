@@ -1,7 +1,7 @@
 <?php
-namespace Logik\AddToCart\Model;
+namespace Logik\Logik\Model;
 
-use Logik\AddToCart\Api\AddToCartInterface;
+use Logik\Logik\Api\AddToCartInterface;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable;
