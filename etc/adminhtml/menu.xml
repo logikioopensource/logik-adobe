@@ -3,7 +3,7 @@
     <menu>
         <add id="Logik_Logik::logik" title="Logik" translate="title" module="Logik_Logik" sortOrder="50" parent="Magento_Backend::stores" resource="Logik_Logik::logik"/>
         <add id="Logik_Logik::logik_settingspage" title="Credentials" translate="title" module="Logik_Logik" sortOrder="10" parent="Logik_Logik::logik" action="logiksettings/settingspage" resource="Logik_Logik::logik_settingspage"/>
-        <add id="Logik_Logik::add_to_cart" title="Logik Add to Cart" translate="title" module="Logik_Logik" parent="Logik_Logik::logik" resource="Logik_Logik::add_to_cart">
+        <add id="Logik_Logik::add_to_cart" title="Logik Add to Cart" translate="title" module="Logik_Logik" parent="Logik_Logik::logik" resource="Logik_Logik::add_to_cart"/>
 
     </menu>
 </config>
