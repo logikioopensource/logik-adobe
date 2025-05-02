@@ -1,9 +1,8 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
-    <module name="Logik_Logik" setup_version="1.0.0">
+    <module name="Logik_AdminConfig" setup_version="1.0.0">
         <sequence>
-            <module name="Magento_AdminGws"/>
-            <module name="Magento_AdobeStockAdminUi"/>
+            <module name="Magento_Backend"/>
         </sequence>
     </module>
 </config> 
