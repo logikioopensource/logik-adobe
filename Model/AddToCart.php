@@ -6,14 +6,13 @@ use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable;
 use Psr\Log\LoggerInterface;
-use function PHPUnit\Framework\isNull;
 
 class AddToCart implements AddToCartInterface
 {
-    protected $cartRepository;
-    protected $logger;
-    protected $productRepository;
-    protected $configurable;
+    private $cartRepository;
+    private $logger;
+    private $productRepository;
+    private $configurable;
 
     public function __construct(
         CartRepositoryInterface $cartRepository,
@@ -76,10 +75,6 @@ class AddToCart implements AddToCartInterface
                     $quoteItem->setPrice($price);
                     $quoteItem->getProduct()->setIsSuperMode(true);
                 }
-                // This ensures that calls to get the cart will have the custom price
-                $quote->collectTotals();
-                // Save the quote
-                $this->cartRepository->save($quote);
             } catch (\Exception $e) {
                 $this->logger->error($e->getMessage());
                 $errors[] = [
@@ -94,6 +89,10 @@ class AddToCart implements AddToCartInterface
                 ];  
             } 
         }
+        // This ensures that calls to get the cart will have the custom price
+        $quote->collectTotals();
+        // Save the quote
+        $this->cartRepository->save($quote);
         return $errors;
     }
 
