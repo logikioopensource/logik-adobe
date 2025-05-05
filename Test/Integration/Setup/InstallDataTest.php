@@ -21,4 +21,4 @@ class InstallDataTest extends TestCase
         $this->assertEquals('logik_is_configurable', $attribute->getAttributeCode());
         $this->assertEquals('boolean', $attribute->getFrontendInput());
     }
-} 
+}

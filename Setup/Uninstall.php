@@ -28,4 +28,4 @@ class Uninstall implements UninstallInterface
 
         $setup->endSetup();
     }
-} 
+}

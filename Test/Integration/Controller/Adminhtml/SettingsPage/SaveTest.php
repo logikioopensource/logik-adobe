@@ -118,4 +118,4 @@ class SaveTest extends AbstractBackendController
         // Should still redirect but with error message
         $this->assertRedirect($this->stringContains('backend/logik_settings/settingspage'));
     }
-} 
+}

@@ -10,5 +10,5 @@ interface AddToCartInterface
  * @param \Magento\Quote\Api\Data\CartItemInterface[] $items
  * @return array List of errors keyed by SKU
  */
-public function addItems(int $quoteId, array $items): array;
+    public function addItems(int $quoteId, array $items): array;
 }
