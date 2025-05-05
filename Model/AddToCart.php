@@ -93,7 +93,7 @@ class AddToCart implements AddToCartInterface
             } 
         }
         // If all items failed
-        if (count($errors) >= count($items)) {
+        if (count($errors) === count($items)) {
             throw new LogikCartException(
                 'All items failed to be added to cart.', $errors);
             }
