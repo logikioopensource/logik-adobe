@@ -2,6 +2,9 @@
 namespace Logik\Logik\Model;
 
 use Logik\Logik\Api\AddToCartInterface;
+use Logik\Logik\Exception\LogikCartException;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Phrase;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable;
@@ -89,6 +92,11 @@ class AddToCart implements AddToCartInterface
                 ];  
             } 
         }
+        // If all items failed
+        if (count($errors) >= count($items)) {
+            throw new LogikCartException(
+                'All items failed to be added to cart.', $errors);
+            }
         // This ensures that calls to get the cart will have the custom price
         $quote->collectTotals();
         // Save the quote
