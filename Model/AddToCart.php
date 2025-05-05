@@ -7,6 +7,7 @@ use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable;
 use Magento\Catalog\Model\Product\Type;
 use Magento\Framework\DataObject;
+use Magento\Framework\Exception\LocalizedException;
 use Psr\Log\LoggerInterface;
 
 class AddToCart implements AddToCartInterface
@@ -37,7 +38,7 @@ class AddToCart implements AddToCartInterface
             try {
                 $this->logger->info("Adding Item: " . $item->getSku() . " with price: " . $item->getPrice());
                 $sku = $item->getSku();
-                $price = $item->getPrice();                
+                $price = $item->getPrice();
 
                 // Get Custom Options array
                 $options = [];
@@ -62,7 +63,7 @@ class AddToCart implements AddToCartInterface
                     $parentId = $configurableParentIds[0];
                     $parentProduct = $this->productRepository->getById($parentId);
                     $quoteItem = $this->addConfigurableProduct($product, $quote, $options, $item, $parentProduct);
-                } else if ($productType === Type::TYPE_BUNDLE) {
+                } elseif ($productType === Type::TYPE_BUNDLE) {
                     $quoteItem = $this->addBundleProduct($product, $quote, $options, $item, $bundleOptions);
                 } else {
                     $quoteItem = $this->addSimpleProduct($product, $quote, $options, $item);
@@ -88,14 +89,14 @@ class AddToCart implements AddToCartInterface
                 $errors[] = [
                     'sku' => $item->getSku(),
                     'message' => $e->getMessage()
-                ];        
+                ];
             } catch (\Error $error) {
                 $this->logger->error($error->getMessage());
                 $errors[] = [
                     'sku' => $item->getSku(),
                     'message' => $error->getMessage()
-                ];  
-            } 
+                ];
+            }
         }
         // This ensures that calls to get the cart will have the custom price
         $quote->collectTotals();
@@ -105,17 +106,18 @@ class AddToCart implements AddToCartInterface
     }
 
         /**
-     * Adds a configurable product to the given quote, returning the quoteItem (or string in error cases)
-     * Adding an item can also throw - we handle thrown errors and string returns essentially the
-     * 
-     * @param \Magento\Catalog\Api\Data\ProductInterface $product
-     * @param \Magento\Catalog\Api\Data\ProductInterface $parentProduct
-     * @param \Magento\Quote\Model\Quote  $quote
-     * @param [] $options
-     * @param \Magento\Quote\Api\Data\CartItemInterface $item
-     * @return \Magento\Quote\Model\Quote\Item|string
-     */
-    private function addConfigurableProduct($product, $quote, $options, $item, $parentProduct): \Magento\Quote\Model\Quote\Item {
+         * Adds a configurable product to the given quote, returning the quoteItem (or string in error cases)
+         * Adding an item can also throw - we handle thrown errors and string returns essentially the
+         *
+         * @param \Magento\Catalog\Api\Data\ProductInterface $product
+         * @param \Magento\Catalog\Api\Data\ProductInterface $parentProduct
+         * @param \Magento\Quote\Model\Quote  $quote
+         * @param [] $options
+         * @param \Magento\Quote\Api\Data\CartItemInterface $item
+         * @return \Magento\Quote\Model\Quote\Item|string
+         */
+    private function addConfigurableProduct($product, $quote, $options, $item, $parentProduct): \Magento\Quote\Model\Quote\Item
+    {
         /** @var \Magento\ConfigurableProduct\Model\Product\Type\Configurable $typeInstance */
         $typeInstance = $parentProduct->getTypeInstance();
         $configurableAttributes = $typeInstance->getConfigurableAttributes($parentProduct);
@@ -141,28 +143,20 @@ class AddToCart implements AddToCartInterface
         return $quote->addProduct($parentProduct, $request);
     }
 
-    /**
-     * Adds a simple product to the given quote, returning the quoteItem (or string in error cases)
-     * Adding an item can also throw - we handle thrown errors and string returns essentially the
-     * 
-     * @param \Magento\Catalog\Api\Data\ProductInterface $product
-     * @param \Magento\Quote\Model\Quote  $quote
-     * @param [] $options
-     * @param \Magento\Quote\Api\Data\CartItemInterface $item
-     * @return \Magento\Quote\Model\Quote\Item|string
-     */
-    private function addSimpleProduct($product, $quote, $options, $item) {
-        $request = new DataObject([
-            'qty' => $item->getQty(),
-            'options' => $options,
-        ]);
-
-        // Add the product to quote, getting the added $quoteItem
-        /** @var \Magento\Quote\Model\Quote\Item */
-        return $quote->addProduct($product, $request);
-    }
-
-    private function addBundleProduct($product, $quote, $options, $item, $bundleOptions) {
+        /**
+         * Adds a simple product to the given quote, returning the quoteItem (or string in error cases)
+         * Adding an item can also throw - we handle thrown errors and string returns essentially the
+         *
+         * @param \Magento\Catalog\Api\Data\ProductInterface $product bundle product
+         * @param \Magento\Quote\Model\Quote  $quote
+         * @param [] $options
+         * @param \Magento\Quote\Api\Data\CartItemInterface $item
+         * @param [] $bundleOptions
+         * @return \Magento\Quote\Model\Quote\Item|string
+         * @throws LocalizedException Throws a localized exception if any bundle option sku not valid
+         */
+    private function addBundleProduct($product, $quote, $options, $item, $bundleOptions)
+    {
         $bundleSelections = [];
         $bundleOptionQtys = [];
 
@@ -175,18 +169,20 @@ class AddToCart implements AddToCartInterface
             $product
         );
         $selectionIndex = [];
+        // transform so we can look up the selection by the sku its associated with
         foreach ($selectionsCollection as $selection) {
             $selectionIndex[$selection->getSku()] = $selection;
         }
 
         $bundleItemData = [];
-
         foreach ($bundleOptions as $option) {
             $sku = $option['sku'];
+            // If the given sku is not a valid option, we'll throw - this is likely a misconfiguration
             if (!isset($selectionIndex[$sku])) {
-                continue; // skip unknown SKU
+                throw new LocalizedException(
+                    __("Bundle option SKU '%1' is not valid for this bundle product. Please verify the SKU is correct.", $sku)
+                );
             }
-    
             $selection = $selectionIndex[$sku];
             $optionId = $selection->getOptionId();
             $selectionId = $selection->getSelectionId();
@@ -228,5 +224,27 @@ class AddToCart implements AddToCartInterface
             $childItem->getProduct()->setIsSuperMode(true);
         }
         return $quoteItem;
+    }
+
+    /**
+     * Adds a simple product to the given quote, returning the quoteItem (or string in error cases)
+     * Adding an item can also throw - we handle thrown errors and string returns essentially the
+     *
+     * @param \Magento\Catalog\Api\Data\ProductInterface $product
+     * @param \Magento\Quote\Model\Quote  $quote
+     * @param [] $options
+     * @param \Magento\Quote\Api\Data\CartItemInterface $item
+     * @return \Magento\Quote\Model\Quote\Item|string
+     */
+    private function addSimpleProduct($product, $quote, $options, $item)
+    {
+        $request = new DataObject([
+            'qty' => $item->getQty(),
+            'options' => $options,
+        ]);
+
+        // Add the product to quote, getting the added $quoteItem
+        /** @var \Magento\Quote\Model\Quote\Item */
+        return $quote->addProduct($product, $request);
     }
 }
