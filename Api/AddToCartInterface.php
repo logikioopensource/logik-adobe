@@ -1,8 +1,6 @@
 <?php
 namespace Logik\Logik\Api;
 
-use Magento\Quote\Api\Data\CartItemInterface;
-
 interface AddToCartInterface
 {
 /**
