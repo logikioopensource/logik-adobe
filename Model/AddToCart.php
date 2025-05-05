@@ -5,6 +5,8 @@ use Logik\Logik\Api\AddToCartInterface;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable;
+use Magento\Catalog\Model\Product\Type;
+use Magento\Framework\DataObject;
 use Psr\Log\LoggerInterface;
 
 class AddToCart implements AddToCartInterface
@@ -39,15 +41,19 @@ class AddToCart implements AddToCartInterface
 
                 // Get Custom Options array
                 $options = [];
+                $bundleOptions = [];
                 if ($item->getProductOption() !== null && $item->getProductOption()->getExtensionAttributes() !== null) {
                     foreach ($item->getProductOption()->getExtensionAttributes()->getCustomOptions() as $customOption) {
                         $options[$customOption->getOptionId()] = $customOption->getOptionValue();
+                        if ($customOption->getOptionId() === "bundleOptions") {
+                            $bundleOptions = json_decode($customOption->getOptionValue(), true);
+                        }
                     }
                 }
 
                 /** @var $product \Magento\Catalog\Api\Data\ProductInterface */
                 $product = $this->productRepository->get($sku);
-
+                $productType = $product->getTypeId();
                 $configurableParentIds = $this->configurable->getParentIdsByChild($product->getId());
 
                 /** @var \Magento\Quote\Model\Quote\Item */
@@ -55,7 +61,9 @@ class AddToCart implements AddToCartInterface
                 if (!empty($configurableParentIds)) {
                     $parentId = $configurableParentIds[0];
                     $parentProduct = $this->productRepository->getById($parentId);
-                    $quoteItem = $this->addConfigurableProduct($product, $parentProduct, $quote, $options, $item);
+                    $quoteItem = $this->addConfigurableProduct($product, $quote, $options, $item, $parentProduct);
+                } else if ($productType === Type::TYPE_BUNDLE) {
+                    $quoteItem = $this->addBundleProduct($product, $quote, $options, $item, $bundleOptions);
                 } else {
                     $quoteItem = $this->addSimpleProduct($product, $quote, $options, $item);
                 }
@@ -107,7 +115,7 @@ class AddToCart implements AddToCartInterface
      * @param \Magento\Quote\Api\Data\CartItemInterface $item
      * @return \Magento\Quote\Model\Quote\Item|string
      */
-    private function addConfigurableProduct($product, $parentProduct, $quote, $options, $item): \Magento\Quote\Model\Quote\Item {
+    private function addConfigurableProduct($product, $quote, $options, $item, $parentProduct): \Magento\Quote\Model\Quote\Item {
         /** @var \Magento\ConfigurableProduct\Model\Product\Type\Configurable $typeInstance */
         $typeInstance = $parentProduct->getTypeInstance();
         $configurableAttributes = $typeInstance->getConfigurableAttributes($parentProduct);
@@ -125,7 +133,7 @@ class AddToCart implements AddToCartInterface
                 $superAttribute[$attributeId] = $value;
             }
         }
-        $request = new \Magento\Framework\DataObject([
+        $request = new DataObject([
             'qty' => $item->getQty(),
             'options' => $options,
             'super_attribute' => $superAttribute
@@ -144,7 +152,7 @@ class AddToCart implements AddToCartInterface
      * @return \Magento\Quote\Model\Quote\Item|string
      */
     private function addSimpleProduct($product, $quote, $options, $item) {
-        $request = new \Magento\Framework\DataObject([
+        $request = new DataObject([
             'qty' => $item->getQty(),
             'options' => $options,
         ]);
@@ -152,5 +160,73 @@ class AddToCart implements AddToCartInterface
         // Add the product to quote, getting the added $quoteItem
         /** @var \Magento\Quote\Model\Quote\Item */
         return $quote->addProduct($product, $request);
+    }
+
+    private function addBundleProduct($product, $quote, $options, $item, $bundleOptions) {
+        $bundleSelections = [];
+        $bundleOptionQtys = [];
+
+        /** @var \Magento\Bundle\Model\Product\Type $bundleTypeInstance */
+        $bundleTypeInstance = $product->getTypeInstance();
+        $bundleTypeInstance->setStoreFilter($product->getStoreId(), $product);
+        $optionsCollection = $bundleTypeInstance->getOptionsCollection($product);
+        $selectionsCollection = $bundleTypeInstance->getSelectionsCollection(
+            $optionsCollection->getAllIds(),
+            $product
+        );
+        $selectionIndex = [];
+        foreach ($selectionsCollection as $selection) {
+            $selectionIndex[$selection->getSku()] = $selection;
+        }
+
+        $bundleItemData = [];
+
+        foreach ($bundleOptions as $option) {
+            $sku = $option['sku'];
+            if (!isset($selectionIndex[$sku])) {
+                continue; // skip unknown SKU
+            }
+    
+            $selection = $selectionIndex[$sku];
+            $optionId = $selection->getOptionId();
+            $selectionId = $selection->getSelectionId();
+    
+            $bundleSelections[$optionId] = $selectionId;
+            $bundleOptionQtys[$selectionId] = (int) $option['qty'];
+            $bundleItemData[$sku] = [
+                'qty' => (int) $option['qty'],
+                'price' => (float) $option['price']
+            ];
+        }
+    
+        
+        // Prepare buy request object
+        $buyRequest = new DataObject([
+            'qty' => $item->getQty(),
+            'options' => $options,
+            'bundle_option' => $bundleSelections,
+            'bundle_option_qty' => $bundleOptionQtys,
+        ]);
+        // Add product to quote
+        $quoteItem = $quote->addProduct($product, $buyRequest);
+        // print_r($quoteItem);
+        if (is_string($quoteItem)) {
+            throw new \RuntimeException("Failed to add product to quote: " . $quoteItem);
+        }
+
+        // Set custom prices on children
+        foreach ($quoteItem->getChildren() as $childItem) {
+            $sku = $childItem->getSku();
+            if (!isset($bundleItemData[$sku])) {
+                continue;
+            }
+    
+            $data = $bundleItemData[$sku];
+            $childItem->setCustomPrice($data['price']);
+            $childItem->setOriginalCustomPrice($data['price']);
+            $childItem->setQty($data['qty']);
+            $childItem->getProduct()->setIsSuperMode(true);
+        }
+        return $quoteItem;
     }
 }
