@@ -4,13 +4,14 @@ namespace Logik\Logik\Model;
 use Logik\Logik\Api\AddToCartInterface;
 use Logik\Logik\Exception\LogikCartException;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Phrase;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable;
 use Magento\Catalog\Model\Product\Type;
 use Magento\Framework\DataObject;
 use Psr\Log\LoggerInterface;
+use Magento\Bundle\Model\ResourceModel\Selection\CollectionFactory as SelectionCollectionFactory;
+
 
 class AddToCart implements AddToCartInterface
 {
@@ -18,17 +19,20 @@ class AddToCart implements AddToCartInterface
     private $logger;
     private $productRepository;
     private $configurable;
+    private $selectionCollectionFactory;
 
     public function __construct(
         CartRepositoryInterface $cartRepository,
         LoggerInterface $logger,
         ProductRepositoryInterface $productRepository,
         Configurable $configurable,
+        SelectionCollectionFactory $selectionCollectionFactory
     ) {
         $this->cartRepository = $cartRepository;
         $this->logger = $logger;
         $this->productRepository = $productRepository;
         $this->configurable = $configurable;
+        $this->selectionCollectionFactory = $selectionCollectionFactory;
     }
 
     /**
@@ -56,7 +60,7 @@ class AddToCart implements AddToCartInterface
                 if ($item->getProductOption() !== null && $item->getProductOption()->getExtensionAttributes() !== null) {
                     foreach ($item->getProductOption()->getExtensionAttributes()->getCustomOptions() as $customOption) {
                         $options[$customOption->getOptionId()] = $customOption->getOptionValue();
-                        if ($customOption->getOptionId() === "bundleOptions") {
+                        if ($customOption->getOptionId() === "bundle_options") {
                             $bundleOptions = json_decode($customOption->getOptionValue(), true);
                         }
                     }
@@ -88,7 +92,8 @@ class AddToCart implements AddToCartInterface
                     continue;
                 }
                 // If we have a price, set it and ensure it will be used
-                if (($price !== null)) {
+                // This block does not work for bundles, as bundles set this on their components
+                if ($price !== null && $productType !== Type::TYPE_BUNDLE) {
                     $quoteItem->setCustomPrice($price);
                     $quoteItem->setOriginalCustomPrice($price);
                     $quoteItem->setPrice($price);
@@ -177,17 +182,13 @@ class AddToCart implements AddToCartInterface
         $bundleSelections = [];
         $bundleOptionQtys = [];
 
-        /** @var \Magento\Bundle\Model\Product\Type $bundleTypeInstance */
-        $bundleTypeInstance = $product->getTypeInstance();
-        $bundleTypeInstance->setStoreFilter($product->getStoreId(), $product);
-        $optionsCollection = $bundleTypeInstance->getOptionsCollection($product);
-        $selectionsCollection = $bundleTypeInstance->getSelectionsCollection(
-            $optionsCollection->getAllIds(),
-            $product
-        );
+        $skus = array_column($bundleOptions, 'sku'); 
+        $selectionCollection = $this->selectionCollectionFactory->create()
+            ->addFieldToFilter('sku', ['in' => $skus]);
+
         $selectionIndex = [];
         // transform so we can look up the selection by the sku its associated with
-        foreach ($selectionsCollection as $selection) {
+        foreach ($selectionCollection as $selection) {
             $selectionIndex[$selection->getSku()] = $selection;
         }
 
@@ -201,6 +202,7 @@ class AddToCart implements AddToCartInterface
                 );
             }
             $selection = $selectionIndex[$sku];
+            print_r($selection);
             $optionId = $selection->getOptionId();
             $selectionId = $selection->getSelectionId();
     
@@ -228,15 +230,10 @@ class AddToCart implements AddToCartInterface
 
         // Set custom prices on children
         foreach ($quoteItem->getChildren() as $childItem) {
-            $sku = $childItem->getSku();
-            if (!isset($bundleItemData[$sku])) {
-                continue;
-            }
-    
-            $data = $bundleItemData[$sku];
+            $data = $bundleItemData[$childItem->getSku()];
             $childItem->setCustomPrice($data['price']);
             $childItem->setOriginalCustomPrice($data['price']);
-            $childItem->setQty($data['qty']);
+            $childItem->setPrice($data['price']);
             $childItem->getProduct()->setIsSuperMode(true);
         }
         return $quoteItem;
