@@ -2,7 +2,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
     <router id="admin">
         <route id="logiksettings" frontName="logiksettings">
-            <module name="Logik_Logik"/>
+            <module name="Logik_Integration"/>
         </route>
     </router>
 </config>

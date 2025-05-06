@@ -3,7 +3,7 @@
     <route url="/V1/logik/carts/:quoteId" method="POST">
         <service class="Logik\Logik\Api\AddToCartInterface" method="addItems"/>
         <resources>
-            <resource ref="Logik_Logik::add_to_cart"/>
+            <resource ref="Logik_Integration::add_to_cart"/>
         </resources>
     </route>
 </routes>

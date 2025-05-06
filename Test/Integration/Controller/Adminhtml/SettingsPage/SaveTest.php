@@ -11,7 +11,7 @@ class SaveTest extends AbstractBackendController
     /**
      * @var string
      */
-    protected $resource = 'Logik_Logik::logik_settingspage';
+    protected $resource = 'Logik_Integration::logik_settingspage';
 
     /**
      * @var string

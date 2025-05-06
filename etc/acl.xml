@@ -4,11 +4,9 @@
         <resources>
             <resource id="Magento_Backend::admin">
                 <resource id="Magento_Backend::stores">
-                    <resource id="Logik_Logik::logik" title="Logik" sortOrder="50">
-                        <resource id="Logik_Logik::logik_settingspage" title="Credentials" sortOrder="10">
-                            <resource id="Logik_Logik::config" title="Configuration" sortOrder="10"/>
-                        </resource>
-                        <resource id="Logik_Logik::add_to_cart" title="Logik Add to Cart" sortOrder="20" />
+                    <resource id="Logik_Integration::logik" title="Logik" sortOrder="50">
+                        <resource id="Logik_Integration::logik_settingspage" title="Credentials" sortOrder="10"/>
+                        <resource id="Logik_Integration::add_to_cart" title="Logik Add to Cart" sortOrder="20" />
                     </resource>
                 </resource>
             </resource>

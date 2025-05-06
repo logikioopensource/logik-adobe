@@ -73,7 +73,7 @@ class SaveTest extends TestCase
         $authorization = $this->createMock(\Magento\Framework\Authorization::class);
         $authorization->expects($this->once())
             ->method('isAllowed')
-            ->with('Logik_Logik::logik_settingspage')
+            ->with('Logik_Integration::logik_settingspage')
             ->willReturn(true);
         
         $context = $this->createMock(\Magento\Backend\App\Action\Context::class);
