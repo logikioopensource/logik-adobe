@@ -18,7 +18,7 @@ class IntegrationToken extends Field
                     readonly="readonly">';
         $html .= '<button type="button" 
                     class="action-default scalable toggle-token" 
-                    data-mage-init=\'{"Logik_Logik/js/toggle-token": {}}\'>
+                    data-mage-init=\'{"Logik_Integration/js/toggle-token": {}}\'>
                     <span>Show Token</span>
                 </button>';
         $html .= '</div>';

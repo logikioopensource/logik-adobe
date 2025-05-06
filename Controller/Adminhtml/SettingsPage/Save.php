@@ -223,6 +223,6 @@ class Save extends Action
 
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('Logik_Logik::logik_settingspage');
+        return $this->_authorization->isAllowed('Logik_Integration::logik_settingspage');
     }
 }
