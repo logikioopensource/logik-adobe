@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Logik\Logik\Setup\Patch\Data;
+namespace Logik\Integration\Setup\Patch\Data;
 
 use Magento\Eav\Setup\EavSetup;
 use Magento\Eav\Setup\EavSetupFactory;
