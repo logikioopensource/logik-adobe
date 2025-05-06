@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Logik\Logik\Plugin;
+namespace Logik\Integration\Plugin;
 
 use Magento\Sales\Model\Order;
 use Psr\Log\LoggerInterface;

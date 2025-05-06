@@ -1,5 +1,5 @@
 <?php
-namespace Logik\Logik\Exception;
+namespace Logik\Integration\Exception;
 
 use Magento\Framework\Exception\AbstractAggregateException;
 use Magento\Framework\Exception\LocalizedException;

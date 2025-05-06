@@ -1,5 +1,5 @@
 <?php
-namespace Logik\Logik\Api;
+namespace Logik\Integration\Api;
 
 interface AddToCartInterface
 {

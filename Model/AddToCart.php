@@ -1,8 +1,8 @@
 <?php
-namespace Logik\Logik\Model;
+namespace Logik\Integration\Model;
 
-use Logik\Logik\Api\AddToCartInterface;
-use Logik\Logik\Exception\LogikCartException;
+use Logik\Integration\Api\AddToCartInterface;
+use Logik\Integration\Exception\LogikCartException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Phrase;
 use Magento\Quote\Api\CartRepositoryInterface;

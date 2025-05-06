@@ -1,5 +1,5 @@
 <?php
-namespace Logik\Logik\Controller\Adminhtml\SettingsPage;
+namespace Logik\Integration\Controller\Adminhtml\SettingsPage;
 
 /**
  * Copyright [first year code created] Adobe

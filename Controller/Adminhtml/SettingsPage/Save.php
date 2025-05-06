@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Logik\Logik\Controller\Adminhtml\SettingsPage;
+namespace Logik\Integration\Controller\Adminhtml\SettingsPage;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;

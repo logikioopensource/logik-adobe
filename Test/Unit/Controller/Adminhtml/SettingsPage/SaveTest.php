@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Logik\Logik\Test\Unit\Controller\Adminhtml\SettingsPage;
+namespace Logik\Integration\Test\Unit\Controller\Adminhtml\SettingsPage;
 
-use Logik\Logik\Controller\Adminhtml\SettingsPage\Save;
+use Logik\Integration\Controller\Adminhtml\SettingsPage\Save;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Config\Storage\WriterInterface;
 use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
