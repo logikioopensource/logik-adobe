@@ -7,9 +7,6 @@ namespace Logik\Logik\Plugin;
 use Magento\Sales\Model\Order;
 use Psr\Log\LoggerInterface;
 
-/**
- *
- */
 class SettingsView
 {
 

@@ -10,4 +10,4 @@ ComponentRegistrar::register(
     ComponentRegistrar::MODULE,
     'Logik_Logik',
     __DIR__
-); 
+);
