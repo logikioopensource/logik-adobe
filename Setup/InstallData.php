@@ -70,4 +70,4 @@ class InstallData implements InstallDataInterface
             throw $e;
         }
     }
-} 
+}

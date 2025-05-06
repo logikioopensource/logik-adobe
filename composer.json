@@ -15,8 +15,6 @@
     "require": {
         "php": ">=8.2.0",
         "magento/framework": "*",
-        "magento/module-admin-gws": "100.4.*",
-        "magento/module-adobe-stock-admin-ui": "1.3.*",
         "magento/module-commerce-backend-uix": "*"
     },
     "require-dev": {
