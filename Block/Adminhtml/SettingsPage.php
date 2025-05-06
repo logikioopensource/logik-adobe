@@ -56,4 +56,4 @@ class SettingsPage extends Template
         
         return $this->scopeConfig->getValue('logik_settings/general/integration_token', ScopeInterface::SCOPE_STORE);
     }
-} 
+}

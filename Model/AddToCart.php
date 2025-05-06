@@ -2,6 +2,9 @@
 namespace Logik\Logik\Model;
 
 use Logik\Logik\Api\AddToCartInterface;
+use Logik\Logik\Exception\LogikCartException;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Phrase;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable;
@@ -26,6 +29,13 @@ class AddToCart implements AddToCartInterface
         $this->configurable = $configurable;
     }
 
+    /**
+     * Adds the given $items to the quote specified by $quoteId
+     *
+     * @param int $quoteId
+     * @param \Magento\Quote\Api\Data\CartItemInterface[] $items
+     * @return array List of errors keyed by SKU
+     */
     public function addItems(int $quoteId, array $items): array
     {
         $errors = [];
@@ -35,7 +45,7 @@ class AddToCart implements AddToCartInterface
             try {
                 $this->logger->info("Adding Item: " . $item->getSku() . " with price: " . $item->getPrice());
                 $sku = $item->getSku();
-                $price = $item->getPrice();                
+                $price = $item->getPrice();
 
                 // Get Custom Options array
                 $options = [];
@@ -80,34 +90,43 @@ class AddToCart implements AddToCartInterface
                 $errors[] = [
                     'sku' => $item->getSku(),
                     'message' => $e->getMessage()
-                ];        
+                ];
             } catch (\Error $error) {
                 $this->logger->error($error->getMessage());
                 $errors[] = [
                     'sku' => $item->getSku(),
                     'message' => $error->getMessage()
-                ];  
-            } 
+                ];
+            }
+        }
+        // If all items failed
+        if (count($errors) >= count($items)) {
+            throw new LogikCartException(
+                'All items failed to be added to cart.',
+                $errors
+            );
         }
         // This ensures that calls to get the cart will have the custom price
         $quote->collectTotals();
+
         // Save the quote
         $this->cartRepository->save($quote);
         return $errors;
     }
 
-        /**
+    /**
      * Adds a configurable product to the given quote, returning the quoteItem (or string in error cases)
-     * Adding an item can also throw - we handle thrown errors and string returns essentially the
-     * 
-     * @param \Magento\Catalog\Api\Data\ProductInterface $product
-     * @param \Magento\Catalog\Api\Data\ProductInterface $parentProduct
-     * @param \Magento\Quote\Model\Quote  $quote
-     * @param [] $options
-     * @param \Magento\Quote\Api\Data\CartItemInterface $item
+     *
+     * @param \Magento\Catalog\Api\Data\ProductInterface    $product
+     * @param \Magento\Catalog\Api\Data\ProductInterface    $parentProduct
+     * @param \Magento\Quote\Model\Quote                    $quote
+     * @param []                                            $options
+     * @param \Magento\Quote\Api\Data\CartItemInterface     $item
      * @return \Magento\Quote\Model\Quote\Item|string
      */
-    private function addConfigurableProduct($product, $parentProduct, $quote, $options, $item): \Magento\Quote\Model\Quote\Item {
+    private function addConfigurableProduct($product, $parentProduct, $quote, $options, $item):
+        \Magento\Quote\Model\Quote\Item|string
+    {
         /** @var \Magento\ConfigurableProduct\Model\Product\Type\Configurable $typeInstance */
         $typeInstance = $parentProduct->getTypeInstance();
         $configurableAttributes = $typeInstance->getConfigurableAttributes($parentProduct);
@@ -135,15 +154,15 @@ class AddToCart implements AddToCartInterface
 
     /**
      * Adds a simple product to the given quote, returning the quoteItem (or string in error cases)
-     * Adding an item can also throw - we handle thrown errors and string returns essentially the
-     * 
-     * @param \Magento\Catalog\Api\Data\ProductInterface $product
-     * @param \Magento\Quote\Model\Quote  $quote
-     * @param [] $options
-     * @param \Magento\Quote\Api\Data\CartItemInterface $item
+     *
+     * @param \Magento\Catalog\Api\Data\ProductInterface    $product
+     * @param \Magento\Quote\Model\Quote                    $quote
+     * @param []                                            $options
+     * @param \Magento\Quote\Api\Data\CartItemInterface     $item
      * @return \Magento\Quote\Model\Quote\Item|string
      */
-    private function addSimpleProduct($product, $quote, $options, $item) {
+    private function addSimpleProduct($product, $quote, $options, $item)
+    {
         $request = new \Magento\Framework\DataObject([
             'qty' => $item->getQty(),
             'options' => $options,
