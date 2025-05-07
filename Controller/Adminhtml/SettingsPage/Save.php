@@ -10,9 +10,9 @@ use Magento\Integration\Api\IntegrationServiceInterface;
 use Magento\Integration\Api\AuthorizationServiceInterface;
 use Magento\Integration\Api\OauthServiceInterface;
 use Magento\Integration\Model\Integration;
-use Zend_Log;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\App\Cache\Manager as CacheManager;
+use Psr\Log\LoggerInterface;
 
 class Save extends Action
 {
@@ -20,7 +20,7 @@ class Save extends Action
     protected IntegrationServiceInterface $integrationService;
     protected AuthorizationServiceInterface $authorizationService;
     protected OauthServiceInterface $oauthService;
-    protected \Zend_Log $logger;
+    protected LoggerInterface $logger;
     protected StoreManagerInterface $storeManager;
     protected CacheManager $cacheManager;
 
@@ -31,7 +31,8 @@ class Save extends Action
         AuthorizationServiceInterface $authorizationService,
         OauthServiceInterface $oauthService,
         StoreManagerInterface $storeManager,
-        CacheManager $cacheManager
+        CacheManager $cacheManager,
+        LoggerInterface $logger
     ) {
         parent::__construct($context);
         $this->configWriter = $configWriter;
@@ -40,23 +41,19 @@ class Save extends Action
         $this->oauthService = $oauthService;
         $this->storeManager = $storeManager;
         $this->cacheManager = $cacheManager;
-        
-        // Setup logger
-        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/logik_settings.log');
-        $this->logger = new \Zend_Log();
-        $this->logger->addWriter($writer);
+        $this->logger = $logger;
     }
 
     private function saveConfigurationValues(array $params, ?string $integrationToken = null): void
     {
-        $this->logger->log('Saving configuration values...', Zend_Log::INFO);
+        $this->logger->info('Saving configuration values...');
         
         // Log the integration token
-        $this->logger->log('Integration token to save: ' . ($integrationToken ?: 'none'), Zend_Log::INFO);
+        $this->logger->info('Integration token to save: ' . ($integrationToken ? '[TOKEN_PRESENT]' : 'none'));
         
         try {
             // Save Logik URL
-            $this->logger->log('Saving logik_url: ' . $params['logik_url'], Zend_Log::INFO);
+            $this->logger->info('Saving logik_url: ' . $params['logik_url']);
             $this->configWriter->save(
                 'logik_settings/general/logik_url',
                 $params['logik_url'],
@@ -65,7 +62,7 @@ class Save extends Action
             );
             
             // Save Runtime Token
-            $this->logger->log('Saving logik_runtime_token: ' . $params['logik_runtime_token'], Zend_Log::INFO);
+            $this->logger->info('Saving logik_runtime_token: ' . $params['logik_runtime_token']);
             $this->configWriter->save(
                 'logik_settings/general/logik_runtime_token',
                 $params['logik_runtime_token'],
@@ -74,19 +71,19 @@ class Save extends Action
             );
 
             if ($integrationToken) {
-                $this->logger->log('Saving integration_token', Zend_Log::INFO);
+                $this->logger->info('Saving integration_token');
                 $this->configWriter->save(
                     'logik_settings/general/integration_token',
                     $integrationToken,
                     'default',
                     0
                 );
-                $this->logger->log('Integration token saved to config', Zend_Log::INFO);
+                $this->logger->info('Integration token saved to config');
             }
             
-            $this->logger->log('Config saved successfully', Zend_Log::INFO);
+            $this->logger->info('Config saved successfully');
         } catch (\Exception $e) {
-            $this->logger->log('Error saving configuration: ' . $e->getMessage(), Zend_Log::ERR);
+            $this->logger->error('Error saving configuration: ' . $e->getMessage());
             throw $e;
         }
     }
@@ -94,48 +91,50 @@ class Save extends Action
     private function generateTokens($integration)
     {
         try {
-            $this->logger->log('Generating OAuth tokens...', Zend_Log::INFO);
+            $this->logger->info('Generating OAuth tokens...');
             $consumerId = $integration->getConsumerId();
             
             if (!$consumerId) {
-                $this->logger->log('No consumer ID found for integration', Zend_Log::ERR);
+                $this->logger->error('No consumer ID found for integration');
                 return $integration;
             }
 
-            $this->logger->log('Consumer ID: ' . $consumerId, Zend_Log::INFO);
+            $this->logger->info('Consumer ID: ' . $consumerId);
             $this->oauthService->createAccessToken($consumerId);
             
             // Refresh integration data
             $integration = $this->integrationService->get($integration->getId());
-            $this->logger->log('Tokens generated successfully', Zend_Log::INFO);
+            $this->logger->info('Tokens generated successfully');
             return $integration;
         } catch (\Exception $e) {
-            $this->logger->log('Failed to generate tokens: ' . $e->getMessage(), Zend_Log::ERR);
+            $this->logger->error('Failed to generate tokens: ' . $e->getMessage());
             return $integration;
         }
     }
 
     private function handleExistingIntegration($integration)
     {
-        $this->logger->log('Existing integration found. Status: ' . $integration->getStatus(), Zend_Log::INFO);
+        $this->logger->info('Existing integration found. Status: ' . $integration->getStatus());
         
         // Ensure the integration is active and has permissions
         if ($integration->getStatus() != Integration::STATUS_ACTIVE) {
             $integration->setStatus(Integration::STATUS_ACTIVE);
             $this->integrationService->update($integration->getData());
-            $this->authorizationService->grantAllPermissions($integration->getId());
+            // Grant only specific permission instead of all permissions
+            $this->authorizationService->grantPermissions($integration->getId(), ['Logik_Integration::add_to_cart']);
             $integration = $this->integrationService->get($integration->getId());
         }
         
-        $this->logger->log('Integration ID: ' . $integration->getId(), Zend_Log::INFO);
-        $this->logger->log('Integration Status: ' . $integration->getStatus(), Zend_Log::INFO);
+        $this->logger->info('Integration ID: ' . $integration->getId());
+        $this->logger->info('Integration Status: ' . $integration->getStatus());
         
         if (!$integration->getToken()) {
-            $this->logger->log('No token found, generating tokens...', Zend_Log::INFO);
+            $this->logger->info('No token found, generating tokens...');
             $integration = $this->generateTokens($integration);
         }
         
-        $this->logger->log('Integration Token: ' . ($integration->getToken() ?: 'No token'), Zend_Log::INFO);
+        // Sanitize token logging - only log if token exists
+        $this->logger->info('Integration Token: ' . ($integration->getToken() ? '[TOKEN_PRESENT]' : 'No token'));
         $this->messageManager->addSuccessMessage(
             __('Integration token saved successfully.')
         );
@@ -145,7 +144,7 @@ class Save extends Action
 
     private function createNewIntegration(array $params)
     {
-        $this->logger->log('Integration not found, creating new one', Zend_Log::INFO);
+        $this->logger->info('Integration not found, creating new one');
         try {
             $integrationData = [
                 'name' => 'logik',
@@ -156,15 +155,15 @@ class Save extends Action
             ];
             
             $integration = $this->integrationService->create($integrationData);
-            $this->authorizationService->grantAllPermissions($integration->getId());
+            $this->authorizationService->grantPermissions($integration->getId(), ['Logik_Integration::add_to_cart']);
             
             // Generate OAuth tokens
             $integration = $this->generateTokens($integration);
             
-            $this->logger->log('New integration created.', Zend_Log::INFO);
-            $this->logger->log('Integration ID: ' . $integration->getId(), Zend_Log::INFO);
-            $this->logger->log('Integration Status: ' . $integration->getStatus(), Zend_Log::INFO);
-            $this->logger->log('Integration Token: ' . ($integration->getToken() ?: 'No token'), Zend_Log::INFO);
+            $this->logger->info('New integration created.');
+            $this->logger->info('Integration ID: ' . $integration->getId());
+            $this->logger->info('Integration Status: ' . $integration->getStatus());
+            $this->logger->info('Integration Token: ' . ($integration->getToken() ? '[TOKEN_PRESENT]' : 'No token'));
             
             $this->messageManager->addSuccessMessage(
                 __('Configuration saved. New integration created with token: %1', $integration->getToken())
@@ -172,7 +171,7 @@ class Save extends Action
             
             return $integration;
         } catch (\Exception $createError) {
-            $this->logger->log('Failed to create integration: ' . $createError->getMessage(), Zend_Log::ERR);
+            $this->logger->error('Failed to create integration: ' . $createError->getMessage());
             $this->messageManager->addErrorMessage(
                 __('Failed to create integration token: %1', $createError->getMessage())
             );
@@ -183,11 +182,11 @@ class Save extends Action
     public function execute()
     {
         $params = $this->getRequest()->getParams();
-        $this->logger->log('Form params: ' . print_r($params, true), Zend_Log::INFO);
+        $this->logger->info('Form params: ' . print_r($params, true));
         
         try {
             // Handle integration token first
-            $this->logger->log('Finding integration by name: logik', Zend_Log::INFO);
+            $this->logger->info('Finding integration by name: logik');
             $integration = $this->integrationService->findByName('logik');
             
             if ($integration && $integration->getId()) {
@@ -207,13 +206,13 @@ class Save extends Action
             $this->_eventManager->dispatch('admin_system_config_changed');
             
             // Directly flush the config cache
-            $this->logger->log('Flushing config cache directly', Zend_Log::INFO);
+            $this->logger->info('Flushing config cache directly');
             $this->cacheManager->flush(['config']);
             
             $this->messageManager->addSuccessMessage(__('Configuration saved successfully.'));
             
         } catch (\Exception $e) {
-            $this->logger->log('Error in save process: ' . $e->getMessage(), Zend_Log::ERR);
+            $this->logger->error('Error in save process: ' . $e->getMessage());
             $this->messageManager->addErrorMessage(__('An error occurred while saving the configuration.'));
         }
 
