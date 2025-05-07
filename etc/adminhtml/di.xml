@@ -8,9 +8,9 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <!-- A Plugin that executes when the admin user places an order -->
     <type name="Magento\Sales\Model\Order">
-        <plugin name="admin-logik-settings-view" type="Logik\Logik\Plugin\SettingsView" disabled="false" sortOrder="0"/>
+        <plugin name="admin-logik-settings-view" type="Logik\Integration\Plugin\SettingsView" disabled="false" sortOrder="0"/>
     </type>
-    <type name="Logik\Logik\Controller\Adminhtml\SettingsPage\Save">
+    <type name="Logik\Integration\Controller\Adminhtml\SettingsPage\Save">
         <arguments>
             <argument name="integrationService" xsi:type="object">Magento\Integration\Api\IntegrationServiceInterface</argument>
             <argument name="storeManager" xsi:type="object">Magento\Store\Model\StoreManagerInterface\Proxy</argument>

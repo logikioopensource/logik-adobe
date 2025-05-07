@@ -1,8 +1,8 @@
 <?php
-namespace Logik\Logik\Model;
+namespace Logik\Integration\Model;
 
-use Logik\Logik\Api\AddToCartInterface;
-use Logik\Logik\Exception\LogikCartException;
+use Logik\Integration\Api\AddToCartInterface;
+use Logik\Integration\Exception\LogikCartException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
@@ -114,7 +114,7 @@ class AddToCart implements AddToCartInterface
             }
         }
         // If all items failed
-        if (count($errors) >= count($items)) {
+        if (count($errors) === count($items)) {
             throw new LogikCartException(
                 'All items failed to be added to cart.',
                 $errors

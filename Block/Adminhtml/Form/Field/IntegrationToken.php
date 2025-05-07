@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Logik\Logik\Block\Adminhtml\Form\Field;
+namespace Logik\Integration\Block\Adminhtml\Form\Field;
 
 use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
@@ -18,7 +18,7 @@ class IntegrationToken extends Field
                     readonly="readonly">';
         $html .= '<button type="button" 
                     class="action-default scalable toggle-token" 
-                    data-mage-init=\'{"Logik_Logik/js/toggle-token": {}}\'>
+                    data-mage-init=\'{"Logik_Integration/js/toggle-token": {}}\'>
                     <span>Show Token</span>
                 </button>';
         $html .= '</div>';

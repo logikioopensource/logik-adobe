@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Logik\Logik\Test\Integration\Controller\Adminhtml\SettingsPage;
+namespace Logik\Integration\Test\Integration\Controller\Adminhtml\SettingsPage;
 
 use Magento\TestFramework\TestCase\AbstractBackendController;
 use Magento\Framework\App\Request\Http as HttpRequest;
@@ -11,7 +11,7 @@ class SaveTest extends AbstractBackendController
     /**
      * @var string
      */
-    protected $resource = 'Logik_Logik::logik_settingspage';
+    protected $resource = 'Logik_Integration::logik_settingspage';
 
     /**
      * @var string

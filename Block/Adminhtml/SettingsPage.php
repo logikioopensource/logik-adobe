@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Logik\Logik\Block\Adminhtml;
+namespace Logik\Integration\Block\Adminhtml;
 
 use Magento\Backend\Block\Template;
 use Magento\Backend\Block\Template\Context;

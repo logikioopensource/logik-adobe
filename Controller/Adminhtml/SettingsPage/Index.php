@@ -1,5 +1,5 @@
 <?php
-namespace Logik\Logik\Controller\Adminhtml\SettingsPage;
+namespace Logik\Integration\Controller\Adminhtml\SettingsPage;
 
 /**
  * Copyright [first year code created] Adobe
@@ -15,7 +15,7 @@ use Magento\Framework\View\Result\PageFactory;
 
 class Index extends Action implements HttpGetActionInterface
 {
-    const MENU_ID = 'Logik_Logik::logik_settingspage';
+    const MENU_ID = 'Logik_Integration::logik_settingspage';
 
     /**
      * @var PageFactory

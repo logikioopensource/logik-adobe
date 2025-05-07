@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Logik\Logik\Test\Unit\Controller\Adminhtml\SettingsPage;
+namespace Logik\Integration\Test\Unit\Controller\Adminhtml\SettingsPage;
 
-use Logik\Logik\Controller\Adminhtml\SettingsPage\Save;
+use Logik\Integration\Controller\Adminhtml\SettingsPage\Save;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Config\Storage\WriterInterface;
 use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
@@ -73,7 +73,7 @@ class SaveTest extends TestCase
         $authorization = $this->createMock(\Magento\Framework\Authorization::class);
         $authorization->expects($this->once())
             ->method('isAllowed')
-            ->with('Logik_Logik::logik_settingspage')
+            ->with('Logik_Integration::logik_settingspage')
             ->willReturn(true);
         
         $context = $this->createMock(\Magento\Backend\App\Action\Context::class);

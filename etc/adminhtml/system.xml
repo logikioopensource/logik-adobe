@@ -7,7 +7,7 @@
         <section id="logik_settings" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
             <label>Logik Settings</label>
             <tab>logik</tab>
-            <resource>Logik_Logik::config</resource>
+            <resource>Logik_Integration::config</resource>
             <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>General Configuration</label>
                 <field id="logik_url" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -18,7 +18,7 @@
                 </field>
                 <field id="integration_token" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Integration Token</label>
-                    <frontend_model>Logik\Logik\Block\Adminhtml\Form\Field\IntegrationToken</frontend_model>
+                    <frontend_model>Logik\Integration\Block\Adminhtml\Form\Field\IntegrationToken</frontend_model>
                     <comment>This is your integration token. Click the button to reveal it.</comment>
                 </field>
             </group>
