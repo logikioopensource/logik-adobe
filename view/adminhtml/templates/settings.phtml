@@ -5,18 +5,38 @@ $viewModel = $block->getViewModel();
 ?>
 <div class="logik-settings-container">
     <h2>Logik Integration Settings</h2>
-    <div class="logik-settings-content">
-        <div class="logik-settings-field">
-            <label>Logik URL:</label>
-            <span><?= $block->escapeHtml($viewModel->getLogikUrl()) ?></span>
+    <form id="logik-settings-form" method="post" action="<?= $block->escapeUrl($block->getUrl('logiksettings/settingspage/save')) ?>">
+        <?= $block->getBlockHtml('formkey') ?>
+        <div class="logik-settings-content">
+            <div class="logik-settings-field">
+                <label for="logik_url">Logik URL:</label>
+                <input type="text" 
+                       id="logik_url" 
+                       name="logik_url" 
+                       value="<?= $block->escapeHtmlAttr($viewModel->getLogikUrl()) ?>" 
+                       class="input-text admin__control-text"/>
+            </div>
+            <div class="logik-settings-field">
+                <label for="logik_runtime_token">Runtime Token:</label>
+                <input type="text" 
+                       id="logik_runtime_token" 
+                       name="logik_runtime_token" 
+                       value="<?= $block->escapeHtmlAttr($viewModel->getLogikRuntimeToken()) ?>" 
+                       class="input-text admin__control-text"/>
+            </div>
+            <div class="logik-settings-field">
+                <label for="integration_token">Integration Token:</label>
+                <input type="text" 
+                       id="integration_token" 
+                       name="integration_token" 
+                       value="<?= $block->escapeHtmlAttr($viewModel->getIntegrationToken()) ?>" 
+                       class="input-text admin__control-text"/>
+            </div>
+            <div class="logik-settings-actions">
+                <button type="submit" class="action-primary">
+                    <span><?= $block->escapeHtml(__('Save Settings')) ?></span>
+                </button>
+            </div>
         </div>
-        <div class="logik-settings-field">
-            <label>Runtime Token:</label>
-            <span><?= $block->escapeHtml($viewModel->getLogikRuntimeToken()) ?></span>
-        </div>
-        <div class="logik-settings-field">
-            <label>Integration Token:</label>
-            <span><?= $block->escapeHtml($viewModel->getIntegrationToken()) ?></span>
-        </div>
-    </div>
+    </form>
 </div> 
