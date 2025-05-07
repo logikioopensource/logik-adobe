@@ -12,7 +12,6 @@ use Magento\Framework\DataObject;
 use Psr\Log\LoggerInterface;
 use Magento\Bundle\Model\ResourceModel\Selection\CollectionFactory as SelectionCollectionFactory;
 
-
 class AddToCart implements AddToCartInterface
 {
     private $cartRepository;
@@ -165,23 +164,23 @@ class AddToCart implements AddToCartInterface
         return $quote->addProduct($parentProduct, $request);
     }
 
-        /**
-         * Adds a simple product to the given quote, returning the quoteItem (or string in error cases)
-         *
-         * @param \Magento\Catalog\Api\Data\ProductInterface $product bundle product
-         * @param \Magento\Quote\Model\Quote                 $quote
-         * @param []                                         $options
-         * @param \Magento\Quote\Api\Data\CartItemInterface  $item
-         * @param []                                         $bundleOptions
-         * @return \Magento\Quote\Model\Quote\Item|string
-         * @throws LocalizedException Throws a localized exception if any bundle option sku not valid
-         */
+    /**
+     * Adds a simple product to the given quote, returning the quoteItem (or string in error cases)
+     *
+     * @param \Magento\Catalog\Api\Data\ProductInterface $product bundle product
+     * @param \Magento\Quote\Model\Quote                 $quote
+     * @param []                                         $options
+     * @param \Magento\Quote\Api\Data\CartItemInterface  $item
+     * @param []                                         $bundleOptions
+     * @return \Magento\Quote\Model\Quote\Item|string
+     * @throws LocalizedException Throws a localized exception if any bundle option sku not valid
+     */
     private function addBundleProduct($product, $quote, $options, $item, $bundleOptions)
     {
         $bundleSelections = [];
         $bundleOptionQtys = [];
 
-        $skus = array_column($bundleOptions, 'sku'); 
+        $skus = array_column($bundleOptions, 'sku');
         $selectionCollection = $this->selectionCollectionFactory->create()
             ->addFieldToFilter('sku', ['in' => $skus]);
 
@@ -201,7 +200,6 @@ class AddToCart implements AddToCartInterface
                 );
             }
             $selection = $selectionIndex[$sku];
-            print_r($selection);
             $optionId = $selection->getOptionId();
             $selectionId = $selection->getSelectionId();
     
@@ -222,7 +220,6 @@ class AddToCart implements AddToCartInterface
         ]);
         // Add product to quote
         $quoteItem = $quote->addProduct($product, $buyRequest);
-        // print_r($quoteItem);
         if (is_string($quoteItem)) {
             throw new \RuntimeException("Failed to add product to quote: " . $quoteItem);
         }
