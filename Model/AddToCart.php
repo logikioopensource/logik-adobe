@@ -196,7 +196,7 @@ class AddToCart implements AddToCartInterface
             // If the given sku is not a valid option, we'll throw - this is likely a misconfiguration
             if (!isset($selectionIndex[$sku])) {
                 throw new LocalizedException(
-                    __("Bundle option SKU '%1' is not valid for this bundle product.", $sku)
+                    phrase: __("Bundle option SKU '%1' is not valid for this bundle product.", $sku)
                 );
             }
             $selection = $selectionIndex[$sku];
@@ -221,7 +221,7 @@ class AddToCart implements AddToCartInterface
         // Add product to quote
         $quoteItem = $quote->addProduct($product, $buyRequest);
         if (is_string($quoteItem)) {
-            throw new \RuntimeException("Failed to add product to quote: " . $quoteItem);
+            throw new LocalizedException(__("Failed to add product to quote: %1", $quoteItem));
         }
 
         // Set custom prices on children
