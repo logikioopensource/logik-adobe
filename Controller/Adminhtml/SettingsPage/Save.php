@@ -120,8 +120,11 @@ class Save extends Action
         if ($integration->getStatus() != Integration::STATUS_ACTIVE) {
             $integration->setStatus(Integration::STATUS_ACTIVE);
             $this->integrationService->update($integration->getData());
-            // Grant only specific permission instead of all permissions
-            $this->authorizationService->grantPermissions($integration->getId(), ['Logik_Integration::add_to_cart']);
+            // Grant required permissions
+            $this->authorizationService->grantPermissions($integration->getId(), [
+                'Logik_Integration::add_to_cart',
+                'Magento_Catalog::products'
+            ]);
             $integration = $this->integrationService->get($integration->getId());
         }
         
@@ -155,7 +158,11 @@ class Save extends Action
             ];
             
             $integration = $this->integrationService->create($integrationData);
-            $this->authorizationService->grantPermissions($integration->getId(), ['Logik_Integration::add_to_cart']);
+            // Grant required permissions
+            $this->authorizationService->grantPermissions($integration->getId(), [
+                'Logik_Integration::add_to_cart',
+                'Magento_Catalog::products'
+            ]);
             
             // Generate OAuth tokens
             $integration = $this->generateTokens($integration);
