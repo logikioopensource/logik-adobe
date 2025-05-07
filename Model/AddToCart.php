@@ -49,10 +49,9 @@ class AddToCart implements AddToCartInterface
         $quote = $this->cartRepository->getActive($quoteId);
         foreach ($items as $item) {
             try {
-                $this->logger->info("Adding Item: " . $item->getSku() . " with price: " . $item->getPrice());
                 $sku = $item->getSku();
                 $price = $item->getPrice();
-                $price = $item->getPrice();
+                $this->logger->info("Adding Item: " . $sku . " with price: " . $price);
 
                 // Get Custom Options array
                 $options = [];
