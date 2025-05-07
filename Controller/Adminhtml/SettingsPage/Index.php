@@ -56,4 +56,14 @@ class Index extends Action implements HttpGetActionInterface
 
         return $resultPage;
     }
+
+    /**
+     * Check admin permissions for this controller
+     *
+     * @return bool
+     */
+    protected function _isAllowed()
+    {
+        return $this->_authorization->isAllowed('Logik_Integration::logik_settingspage');
+    }
 }
