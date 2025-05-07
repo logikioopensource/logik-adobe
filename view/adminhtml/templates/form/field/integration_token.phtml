@@ -1,0 +1,19 @@
+<?php
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
+<div class="integration-token-wrapper">
+    <input type="password" 
+           id="<?= $escaper->escapeHtmlAttr($block->getElement()->getHtmlId()) ?>" 
+           name="<?= $escaper->escapeHtmlAttr($block->getElement()->getName()) ?>"
+           class="integration-token-input" 
+           value="<?= $escaper->escapeHtmlAttr($block->getElement()->getEscapedValue()) ?>" 
+           readonly="readonly">
+    <button type="button" 
+            class="action-default scalable toggle-token" 
+            data-mage-init='{"Logik_Integration/js/toggle-token": {}}'>
+        <span>Show Token</span>
+    </button>
+</div> 

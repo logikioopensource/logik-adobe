@@ -44,12 +44,6 @@ class Index extends Action implements HttpGetActionInterface
      */
     public function execute()
     {
-        // Add debugging
-        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/logik_settings.log');
-        $logger = new \Zend_Log();
-        $logger->addWriter($writer);
-        $logger->info('Settings page controller executed');
-
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu(static::MENU_ID);
         $resultPage->getConfig()->getTitle()->prepend(__('Logik Settings'));
