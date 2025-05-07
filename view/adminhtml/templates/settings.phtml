@@ -1,0 +1,22 @@
+<?php
+/** @var \Logik\Integration\Block\Adminhtml\SettingsPage $block */
+/** @var \Logik\Integration\ViewModel\Adminhtml\SettingsViewModel $viewModel */
+$viewModel = $block->getViewModel();
+?>
+<div class="logik-settings-container">
+    <h2>Logik Integration Settings</h2>
+    <div class="logik-settings-content">
+        <div class="logik-settings-field">
+            <label>Logik URL:</label>
+            <span><?= $block->escapeHtml($viewModel->getLogikUrl()) ?></span>
+        </div>
+        <div class="logik-settings-field">
+            <label>Runtime Token:</label>
+            <span><?= $block->escapeHtml($viewModel->getLogikRuntimeToken()) ?></span>
+        </div>
+        <div class="logik-settings-field">
+            <label>Integration Token:</label>
+            <span><?= $block->escapeHtml($viewModel->getIntegrationToken()) ?></span>
+        </div>
+    </div>
+</div> 
