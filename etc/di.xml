@@ -6,5 +6,5 @@
             <argument name="fileName" xsi:type="string">/var/log/logik_setup.log</argument>
         </arguments>
     </type>
-    <preference for="Logik\Logik\Api\AddToCartInterface" type="Logik\Logik\Model\AddToCart"/>
+    <preference for="Logik\Integration\Api\AddToCartInterface" type="Logik\Integration\Model\AddToCart"/>
 </config> 

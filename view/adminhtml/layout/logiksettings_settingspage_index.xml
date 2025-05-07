@@ -6,7 +6,7 @@
     </head>
     <body>
         <referenceContainer name="content">
-            <block class="Logik\Logik\Block\Adminhtml\SettingsPage" 
+            <block class="Logik\Integration\Block\Adminhtml\SettingsPage" 
                    name="logik_settings_page" 
                    template="Logik_Integration::settingspage.phtml"/>
         </referenceContainer>
