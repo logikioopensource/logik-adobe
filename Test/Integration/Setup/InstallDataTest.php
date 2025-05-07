@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Logik\Logik\Test\Integration\Setup;
+namespace Logik\Integration\Test\Integration\Setup;
 
 use Magento\Catalog\Model\Product;
 use Magento\TestFramework\Helper\Bootstrap;
@@ -21,4 +21,4 @@ class InstallDataTest extends TestCase
         $this->assertEquals('logik_is_configurable', $attribute->getAttributeCode());
         $this->assertEquals('boolean', $attribute->getFrontendInput());
     }
-} 
+}

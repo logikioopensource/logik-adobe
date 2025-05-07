@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Logik\Logik\Controller\Adminhtml\SettingsPage;
+namespace Logik\Integration\Controller\Adminhtml\SettingsPage;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
@@ -223,6 +223,6 @@ class Save extends Action
 
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('Logik_Logik::logik_settingspage');
+        return $this->_authorization->isAllowed('Logik_Integration::logik_settingspage');
     }
 }

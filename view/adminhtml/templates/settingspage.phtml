@@ -14,7 +14,7 @@ $logger->info('Template file settingspage.phtml loaded');
                    id="logik_url" 
                    name="logik_url" 
                    class="input scalable" 
-                   value="<?= $block->escapeHtmlAttr($block->getLogikUrl()) ?>"
+                   value="<?= $escaper->escapeHtmlAttr($block->getLogikUrl()) ?>"
                    data-validate="{'required':true, 'url':true}">
             <div class="field-error" style="display: none;"></div>
         </div>
@@ -26,7 +26,7 @@ $logger->info('Template file settingspage.phtml loaded');
                    id="logik_runtime_token"
                    name="logik_runtime_token"
                    class="input scalable"
-                   value="<?= $block->escapeHtmlAttr($block->getLogikRuntimeToken()) ?>"
+                   value="<?= $escaper->escapeHtmlAttr($block->getLogikRuntimeToken()) ?>"
                    data-validate="{'required':true}">
             <div class="field-error" style="display: none;"></div>
         </div>
@@ -38,11 +38,11 @@ $logger->info('Template file settingspage.phtml loaded');
             <input type="password" 
                    id="integration_token" 
                    class="integration-token-input" 
-                   value="<?= $block->escapeHtmlAttr($block->getIntegrationToken()) ?>" 
+                   value="<?= $escaper->escapeHtmlAttr($block->getIntegrationToken()) ?>" 
                    readonly="readonly">
             <button type="button" 
                     class="action-default scalable toggle-token" 
-                    data-mage-init='{"Logik_Logik/js/toggle-token": {}}'>
+                    data-mage-init='{"Logik_Integration/js/toggle-token": {}}'>
                 <span>Show Token</span>
             </button>
         </div>
@@ -54,7 +54,7 @@ $logger->info('Template file settingspage.phtml loaded');
         <button type="button" 
                 id="test-credentials" 
                 class="action secondary"
-                data-mage-init='{"Logik_Logik/js/test-credentials": {}}'>
+                data-mage-init='{"Logik_Integration/js/test-credentials": {}}'>
             <span>Test Credentials</span>
         </button>
     </div>

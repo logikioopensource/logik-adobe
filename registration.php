@@ -8,6 +8,6 @@ use Magento\Framework\Component\ComponentRegistrar;
 
 ComponentRegistrar::register(
     ComponentRegistrar::MODULE,
-    'Logik_Logik',
+    'Logik_Integration',
     __DIR__
-); 
+);
