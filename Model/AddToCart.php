@@ -186,7 +186,6 @@ class AddToCart implements AddToCartInterface
         $selectionCollection = $typeInstance->getSelectionsCollection($optionCollection, $product)
             ->addFieldToFilter('sku', ['in' => $skus]);
         $selectionCollection = $selectionCollection->addFieldToFilter('sku', ['in' => $skus]);
-        print_r(count($selectionCollection));
         $selectionIndex = [];
         // transform so we can look up the selection by the sku its associated with
         foreach ($selectionCollection as $selection) {
