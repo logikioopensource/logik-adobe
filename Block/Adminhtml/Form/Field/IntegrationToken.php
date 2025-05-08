@@ -8,24 +8,25 @@ use Magento\Framework\Data\Form\Element\AbstractElement;
 
 class IntegrationToken extends Field
 {
+    /**
+     * @var string
+     */
+    protected $_template = 'Logik_Integration::form/field/integration_token.phtml';
+
+    /**
+     * @param AbstractElement $element
+     * @return string
+     */
     protected function _getElementHtml(AbstractElement $element)
     {
-        $html = '<div class="integration-token-wrapper">';
-        $html .= '<input type="password" id="' . $element->getHtmlId() . '" 
-                    name="' . $element->getName() . '"
-                    class="integration-token-input" 
-                    value="' . $element->getEscapedValue() . '" 
-                    readonly="readonly">';
-        $html .= '<button type="button" 
-                    class="action-default scalable toggle-token" 
-                    data-mage-init=\'{"Logik_Integration/js/toggle-token": {}}\'>
-                    <span>Show Token</span>
-                </button>';
-        $html .= '</div>';
-
-        return $html;
+        $this->setElement($element);
+        return $this->toHtml();
     }
 
+    /**
+     * @param AbstractElement $element
+     * @return string
+     */
     protected function _renderScopeLabel(AbstractElement $element)
     {
         return '';

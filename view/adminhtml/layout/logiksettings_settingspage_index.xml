@@ -8,7 +8,11 @@
         <referenceContainer name="content">
             <block class="Logik\Integration\Block\Adminhtml\SettingsPage" 
                    name="logik_settings_page" 
-                   template="Logik_Integration::settingspage.phtml"/>
+                   template="Logik_Integration::settings.phtml">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Logik\Integration\ViewModel\Adminhtml\SettingsViewModel</argument>
+                </arguments>
+            </block>
         </referenceContainer>
         <referenceContainer name="js">
             <block class="Magento\Backend\Block\Template" 
