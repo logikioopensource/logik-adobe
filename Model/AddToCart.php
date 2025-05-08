@@ -39,7 +39,7 @@ class AddToCart implements AddToCartInterface
      *
      * @param int $quoteId
      * @param \Magento\Quote\Api\Data\CartItemInterface[] $items
-     * @return array List of errors keyed by SKU
+     * @return \Logik\Integration\Api\Data\ProductFailMessageInterface[] List of errors keyed by SKU
      */
     public function addItems(int $quoteId, array $items): array
     {
@@ -224,7 +224,7 @@ class AddToCart implements AddToCartInterface
         if (is_string($quoteItem)) {
             throw new LocalizedException(__("Failed to add product to quote: %1", $quoteItem));
         }
-
+        print_r("Here");
         // Set custom prices on children
         foreach ($quoteItem->getChildren() as $childItem) {
             $data = $bundleItemData[$childItem->getSku()];
