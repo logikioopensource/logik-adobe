@@ -3,14 +3,15 @@ namespace Logik\Integration\Model;
 
 use Logik\Integration\Api\AddToCartInterface;
 use Logik\Integration\Exception\LogikCartException;
+use Logik\Integration\Model\Data\ProductFailMessage;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
-use Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable;
 use Magento\Catalog\Model\Product\Type;
+use Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable;
+use Magento\Bundle\Model\ResourceModel\Selection\CollectionFactory as SelectionCollectionFactory;
+use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Framework\DataObject;
 use Psr\Log\LoggerInterface;
-use Magento\Bundle\Model\ResourceModel\Selection\CollectionFactory as SelectionCollectionFactory;
 
 class AddToCart implements AddToCartInterface
 {
@@ -20,6 +21,14 @@ class AddToCart implements AddToCartInterface
     private $configurable;
     private $selectionCollectionFactory;
 
+    /**
+     * Summary of __construct
+     * @param \Magento\Quote\Api\CartRepositoryInterface $cartRepository
+     * @param \Psr\Log\LoggerInterface $logger
+     * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
+     * @param \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $configurable
+     * @param \Magento\Bundle\Model\ResourceModel\Selection\CollectionFactory $selectionCollectionFactory
+     */
     public function __construct(
         CartRepositoryInterface $cartRepository,
         LoggerInterface $logger,
@@ -39,7 +48,7 @@ class AddToCart implements AddToCartInterface
      *
      * @param int $quoteId
      * @param \Magento\Quote\Api\Data\CartItemInterface[] $items
-     * @return array List of errors keyed by SKU
+     * @return \Logik\Integration\Api\Data\ProductFailMessageInterface[] List of errors keyed by SKU
      */
     public function addItems(int $quoteId, array $items): array
     {
@@ -55,7 +64,9 @@ class AddToCart implements AddToCartInterface
                 // Get Custom Options array
                 $options = [];
                 $bundleOptions = [];
-                if ($item->getProductOption() !== null && $item->getProductOption()->getExtensionAttributes() !== null) {
+                $productOption = $item->getProductOption();
+                if ($productOption !== null && $productOption->getExtensionAttributes() !== null) {
+                    
                     foreach ($item->getProductOption()->getExtensionAttributes()->getCustomOptions() as $customOption) {
                         $options[$customOption->getOptionId()] = $customOption->getOptionValue();
                         if ($customOption->getOptionId() === "bundle_options") {
@@ -83,10 +94,10 @@ class AddToCart implements AddToCartInterface
                 // Handle errors adding product
                 if (!($quoteItem instanceof \Magento\Quote\Model\Quote\Item)) {
                     // This syntax is kinda ridiculous - why does this append to an array
-                    $errors[] = [
-                        'sku' => $sku,
-                        'message' => 'Failed to add product to quote with message ' . $quoteItem
-                    ];
+                    $errors[] = new ProductFailMessage(
+                        $sku,
+                        'Failed to add product to quote with message ' . $quoteItem
+                    );
                     continue;
                 }
                 // If we have a price, set it and ensure it will be used
@@ -99,16 +110,10 @@ class AddToCart implements AddToCartInterface
                 }
             } catch (\Exception $e) {
                 $this->logger->error($e->getMessage());
-                $errors[] = [
-                    'sku' => $item->getSku(),
-                    'message' => $e->getMessage()
-                ];
+                $errors[] = new ProductFailMessage($item->getSku(), $e->getMessage());
             } catch (\Error $error) {
                 $this->logger->error($error->getMessage());
-                $errors[] = [
-                    'sku' => $item->getSku(),
-                    'message' => $error->getMessage()
-                ];
+                $errors[] = new ProductFailMessage($item->getSku(), $error->getMessage());
             }
         }
         // If all items failed
@@ -224,7 +229,6 @@ class AddToCart implements AddToCartInterface
         if (is_string($quoteItem)) {
             throw new LocalizedException(__("Failed to add product to quote: %1", $quoteItem));
         }
-
         // Set custom prices on children
         foreach ($quoteItem->getChildren() as $childItem) {
             $data = $bundleItemData[$childItem->getSku()];

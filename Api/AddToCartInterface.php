@@ -8,7 +8,7 @@ interface AddToCartInterface
  *
  * @param int $quoteId
  * @param \Magento\Quote\Api\Data\CartItemInterface[] $items
- * @return array List of errors keyed by SKU
+ * @return \Logik\Integration\Api\Data\ProductFailMessageInterface[] List of errors keyed by SKU
  */
-    public function addItems(int $quoteId, array $items): array;
+    public function addItems(int $quoteId, array $items);
 }
