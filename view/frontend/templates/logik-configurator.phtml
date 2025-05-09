@@ -3,8 +3,24 @@
  * @var \Magento\Framework\View\Element\Template $block
  */
 ?>
-<div data-bind="scope: 'logik-configurator'">
-    <!-- ko template: getTemplate() --><!-- /ko -->
+<div class="logik-configurator-wrapper">
+    <!-- Static content that loads immediately -->
+    <div class="logik-configurator-static">
+        <h2 class="logik-configurator-title">Product Configurator</h2>
+        <div class="logik-configurator-description">
+            <p>Configure your product using our interactive tool. Add items to your cart to see your configuration in action.</p>
+        </div>
+        <div class="logik-configurator-actions">
+            <button type="button" class="action primary logik-configurator-button">
+                <span>Start Configuration</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Dynamic content that loads with JavaScript -->
+    <div data-bind="scope: 'logik-configurator'" class="logik-configurator-dynamic">
+        <!-- ko template: getTemplate() --><!-- /ko -->
+    </div>
 </div>
 
 <script type="text/x-magento-init">

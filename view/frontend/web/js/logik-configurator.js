@@ -25,13 +25,18 @@ define([
             var self = this;
             var cart = customerData.get('cart');
             
+            console.log('Cart data:', cart());
+            
             if (cart().quote_id) {
                 self.cartId = cart().quote_id;
+                console.log('Cart ID set to:', self.cartId);
             }
 
             cart.subscribe(function (updatedCart) {
+                console.log('Cart updated:', updatedCart);
                 if (updatedCart.quote_id) {
                     self.cartId = updatedCart.quote_id;
+                    console.log('Cart ID updated to:', self.cartId);
                 }
             });
         },
@@ -52,6 +57,15 @@ define([
          */
         getClasses: function () {
             return this.classes;
+        },
+
+        /**
+         * Get template
+         *
+         * @returns {String}
+         */
+        getTemplate: function () {
+            return this.template;
         }
     });
 }); 
