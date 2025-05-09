@@ -1,7 +1,8 @@
 <?php
 namespace Logik\Integration\Api\Data;
 
-interface ProductFailMessageInterface {
+interface ProductFailMessageInterface
+{
 
     /**
      * Summary of __construct

@@ -1,10 +1,6 @@
 <?php
 namespace Logik\Integration\Api;
 
-/**
- * Add to cart interface
- * @api
- */
 interface AddToCartInterface
 {
 /**

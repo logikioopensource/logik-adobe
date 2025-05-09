@@ -8,12 +8,17 @@ use Logik\Integration\Api\Data\ProductFailMessageInterface;
 
 class LogikCartException extends AbstractAggregateException
 {
+    /**
+     * Summary of errors
+     *
+     * @var LocalizedException[]
+     */
     protected $errors;
 
     /** Construct an exception containing all failed products
-     * @param string $message Top level message
+     * @param string                         $message Top level message
      * @param ProductFailMessageInterface[]  $errors  Array of errors containing problem SKU and its message
-     * @param int    $code    Error code, default: 400
+     * @param int                            $code    Error code, default: 400
      */
     public function __construct($message, array $errors = [], $code = 400)
     {
@@ -36,7 +41,8 @@ class LogikCartException extends AbstractAggregateException
 
     /**
      * Get Errors attached to this exception, used by exception handlers
-     * @return [] array of LocalizedException
+     *
+     * @return LocalizedException[]
      */
     public function getErrors()
     {

@@ -15,13 +15,22 @@ class ProductFailMessage implements ProductFailMessageInterface
      */
     protected $message;
 
-    public function __construct($sku, $message) {
+    /**
+     * Builds error information
+     *
+     * @param string $sku
+     * @param string $message
+     */
+
+    public function __construct($sku, $message)
+    {
         $this->sku = $sku;
         $this->message = $message;
     }
 
     /**
      * Summary of getSku
+     *
      * @return string
      */
     public function getSku()
@@ -31,6 +40,7 @@ class ProductFailMessage implements ProductFailMessageInterface
 
     /**
      * Summary of setSku
+     *
      * @param string $sku
      * @return static
      */
@@ -42,6 +52,7 @@ class ProductFailMessage implements ProductFailMessageInterface
 
     /**
      * Summary of getMessage
+     *
      * @return string
      */
     public function getMessage()
@@ -51,6 +62,7 @@ class ProductFailMessage implements ProductFailMessageInterface
 
     /**
      * Summary of setMessage
+     *
      * @param string $message
      * @return static
      */

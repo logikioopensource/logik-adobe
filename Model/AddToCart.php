@@ -21,6 +21,14 @@ class AddToCart implements AddToCartInterface
     private $configurable;
     private $selectionCollectionFactory;
 
+    /**
+     * Summary of __construct
+     * @param \Magento\Quote\Api\CartRepositoryInterface $cartRepository
+     * @param \Psr\Log\LoggerInterface $logger
+     * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
+     * @param \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $configurable
+     * @param \Magento\Bundle\Model\ResourceModel\Selection\CollectionFactory $selectionCollectionFactory
+     */
     public function __construct(
         CartRepositoryInterface $cartRepository,
         LoggerInterface $logger,
@@ -56,7 +64,9 @@ class AddToCart implements AddToCartInterface
                 // Get Custom Options array
                 $options = [];
                 $bundleOptions = [];
-                if ($item->getProductOption() !== null && $item->getProductOption()->getExtensionAttributes() !== null) {
+                $productOption = $item->getProductOption();
+                if ($productOption !== null && $productOption->getExtensionAttributes() !== null) {
+                    
                     foreach ($item->getProductOption()->getExtensionAttributes()->getCustomOptions() as $customOption) {
                         $options[$customOption->getOptionId()] = $customOption->getOptionValue();
                         if ($customOption->getOptionId() === "bundle_options") {
@@ -85,7 +95,9 @@ class AddToCart implements AddToCartInterface
                 if (!($quoteItem instanceof \Magento\Quote\Model\Quote\Item)) {
                     // This syntax is kinda ridiculous - why does this append to an array
                     $errors[] = new ProductFailMessage(
-                        $sku, 'Failed to add product to quote with message ' . $quoteItem);
+                        $sku,
+                        'Failed to add product to quote with message ' . $quoteItem
+                    );
                     continue;
                 }
                 // If we have a price, set it and ensure it will be used
