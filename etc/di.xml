@@ -33,4 +33,8 @@
     </type>
 
     <preference for="Logik\Integration\Api\AddToCartInterface" type="Logik\Integration\Model\AddToCart"/>
+
+    <type name="Magento\PageBuilder\Model\Config\ContentType\AdditionalData\Provider">
+        <plugin name="logik_integration_content_type_data" type="Logik\Integration\Plugin\PageBuilder\ContentTypeDataProvider"/>
+    </type>
 </config> 
