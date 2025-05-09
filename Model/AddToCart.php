@@ -11,6 +11,7 @@ use Magento\Catalog\Model\Product\Type;
 use Magento\Framework\DataObject;
 use Psr\Log\LoggerInterface;
 use Magento\Bundle\Model\ResourceModel\Selection\CollectionFactory as SelectionCollectionFactory;
+use Logik\Integration\Model\ProductFailMessage;
 
 class AddToCart implements AddToCartInterface
 {
@@ -83,10 +84,8 @@ class AddToCart implements AddToCartInterface
                 // Handle errors adding product
                 if (!($quoteItem instanceof \Magento\Quote\Model\Quote\Item)) {
                     // This syntax is kinda ridiculous - why does this append to an array
-                    $errors[] = [
-                        'sku' => $sku,
-                        'message' => 'Failed to add product to quote with message ' . $quoteItem
-                    ];
+                    $errors[] = new ProductFailMessage(
+                        $sku, 'Failed to add product to quote with message ' . $quoteItem);
                     continue;
                 }
                 // If we have a price, set it and ensure it will be used
@@ -99,16 +98,10 @@ class AddToCart implements AddToCartInterface
                 }
             } catch (\Exception $e) {
                 $this->logger->error($e->getMessage());
-                $errors[] = [
-                    'sku' => $item->getSku(),
-                    'message' => $e->getMessage()
-                ];
+                $errors[] = new ProductFailMessage($item->getSku(), $e->getMessage());
             } catch (\Error $error) {
                 $this->logger->error($error->getMessage());
-                $errors[] = [
-                    'sku' => $item->getSku(),
-                    'message' => $error->getMessage()
-                ];
+                $errors[] = new ProductFailMessage($item->getSku(), $error->getMessage());
             }
         }
         // If all items failed

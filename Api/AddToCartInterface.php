@@ -1,6 +1,10 @@
 <?php
 namespace Logik\Integration\Api;
 
+/**
+ * Add to cart interface
+ * @api
+ */
 interface AddToCartInterface
 {
 /**
@@ -10,5 +14,5 @@ interface AddToCartInterface
  * @param \Magento\Quote\Api\Data\CartItemInterface[] $items
  * @return \Logik\Integration\Api\Data\ProductFailMessageInterface[] List of errors keyed by SKU
  */
-    public function addItems(int $quoteId, array $items): array;
+    public function addItems(int $quoteId, array $items);
 }

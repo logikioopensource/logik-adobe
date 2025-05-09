@@ -2,7 +2,15 @@
 namespace Logik\Integration\Api\Data;
 
 interface ProductFailMessageInterface {
-        /**
+
+    /**
+     * Summary of __construct
+     * @param string $sku
+     * @param string $message
+     */
+    public function __construct($sku, $message);
+
+    /**
      * Get SKU
      *
      * @return string
