@@ -217,7 +217,6 @@ class AddToCart implements AddToCartInterface
         if (is_string($quoteItem)) {
             throw new LocalizedException(__("Failed to add product to quote: %1", $quoteItem));
         }
-        print_r("Here");
         // Set custom prices on children
         foreach ($quoteItem->getChildren() as $childItem) {
             $data = $bundleItemData[$childItem->getSku()];
