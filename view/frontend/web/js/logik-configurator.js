@@ -1,13 +1,18 @@
 define([
     'uiComponent',
-    'Magento_Customer/js/customer-data'
-], function (Component, customerData) {
+    'Magento_Customer/js/customer-data',
+    'Magento_PageBuilder/js/events',
+    'Magento_PageBuilder/js/content-type-collection'
+], function (Component, customerData, events, ContentTypeCollection) {
     'use strict';
 
     return Component.extend({
         defaults: {
             cartId: null,
-            template: 'Logik_Integration/logik-configurator'
+            template: 'Logik_Integration/logik-configurator',
+            content: '',
+            classes: '',
+            styles: {}
         },
 
         initialize: function () {
@@ -29,6 +34,24 @@ define([
                     self.cartId = updatedCart.quote_id;
                 }
             });
+        },
+
+        /**
+         * Get the styles for the main element
+         *
+         * @returns {Object}
+         */
+        getStyles: function () {
+            return this.styles;
+        },
+
+        /**
+         * Get the classes for the main element
+         *
+         * @returns {String}
+         */
+        getClasses: function () {
+            return this.classes;
         }
     });
 }); 
