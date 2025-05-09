@@ -1,5 +1,5 @@
 <?php
-namespace Logik\Integration\Model;
+namespace Logik\Integration\Model\Data;
 
 use Logik\Integration\Api\Data\ProductFailMessageInterface;
 

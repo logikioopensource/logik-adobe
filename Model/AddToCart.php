@@ -3,15 +3,15 @@ namespace Logik\Integration\Model;
 
 use Logik\Integration\Api\AddToCartInterface;
 use Logik\Integration\Exception\LogikCartException;
+use Logik\Integration\Model\Data\ProductFailMessage;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
-use Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable;
 use Magento\Catalog\Model\Product\Type;
+use Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable;
+use Magento\Bundle\Model\ResourceModel\Selection\CollectionFactory as SelectionCollectionFactory;
+use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Framework\DataObject;
 use Psr\Log\LoggerInterface;
-use Magento\Bundle\Model\ResourceModel\Selection\CollectionFactory as SelectionCollectionFactory;
-use Logik\Integration\Model\ProductFailMessage;
 
 class AddToCart implements AddToCartInterface
 {
