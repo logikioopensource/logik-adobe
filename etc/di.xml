@@ -1,10 +1,36 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- System logger configuration -->
     <type name="Magento\Framework\Logger\Handler\System">
         <arguments>
             <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
             <argument name="fileName" xsi:type="string">/var/log/logik_setup.log</argument>
         </arguments>
     </type>
+
+    <!-- Custom logger for Logik Integration -->
+    <virtualType name="LogikIntegrationLogger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="name" xsi:type="string">logik_integration</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">LogikIntegrationLoggerHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="LogikIntegrationLoggerHandler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+            <argument name="fileName" xsi:type="string">/var/log/logik_integration.log</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Inject our custom logger into the ViewModel -->
+    <type name="Logik\Integration\ViewModel\Adminhtml\SettingsViewModel">
+        <arguments>
+            <argument name="logger" xsi:type="object">LogikIntegrationLogger</argument>
+        </arguments>
+    </type>
+
     <preference for="Logik\Integration\Api\AddToCartInterface" type="Logik\Integration\Model\AddToCart"/>
 </config> 

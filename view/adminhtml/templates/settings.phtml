@@ -1,0 +1,69 @@
+<?php
+/** @var \Logik\Integration\Block\Adminhtml\SettingsPage $block */
+/** @var \Logik\Integration\ViewModel\Adminhtml\SettingsViewModel $viewModel */
+$viewModel = $block->getViewModel();
+?>
+<div class="logik-settings-container">
+    <h2>Logik Integration Settings</h2>
+    <form id="logik-settings-form" method="post" action="<?= $block->escapeUrl($block->getUrl('logiksettings/settingspage/save')) ?>">
+        <?= $block->getBlockHtml('formkey') ?>
+        <div class="logik-settings-content">
+            <div class="logik-settings-field">
+                <label for="logik_url">Logik URL:</label>
+                <input type="text" 
+                       id="logik_url" 
+                       name="logik_url" 
+                       value="<?= $block->escapeHtmlAttr($viewModel->getLogikUrl()) ?>" 
+                       class="input-text admin__control-text"/>
+            </div>
+            <div class="logik-settings-field">
+                <label for="logik_runtime_token">Runtime Token:</label>
+                <input type="text" 
+                       id="logik_runtime_token" 
+                       name="logik_runtime_token" 
+                       value="<?= $block->escapeHtmlAttr($viewModel->getLogikRuntimeToken()) ?>" 
+                       class="input-text admin__control-text"/>
+            </div>
+            <div class="logik-settings-field">
+                <label for="integration_token">Integration Token:</label>
+                <div class="integration-token-container">
+                    <input type="password" 
+                           id="integration_token" 
+                           name="integration_token" 
+                           value="<?= $block->escapeHtmlAttr($viewModel->getIntegrationToken()) ?>" 
+                           class="input-text admin__control-text"/>
+                    <button type="button" 
+                            class="action-secondary" 
+                            id="toggle-token-visibility">
+                        <span><?= $block->escapeHtml(__('Show')) ?></span>
+                    </button>
+                </div>
+            </div>
+            <div class="logik-settings-actions">
+                <button type="submit" class="action-primary">
+                    <span><?= $block->escapeHtml(__('Save Settings')) ?></span>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+require(['jquery'], function($) {
+    $(function() {
+        // Toggle token visibility
+        $('#toggle-token-visibility').on('click', function() {
+            var $input = $('#integration_token');
+            var $button = $(this);
+            
+            if ($input.attr('type') === 'password') {
+                $input.attr('type', 'text');
+                $button.find('span').text('<?= $block->escapeJs(__('Hide')) ?>');
+            } else {
+                $input.attr('type', 'password');
+                $button.find('span').text('<?= $block->escapeJs(__('Show')) ?>');
+            }
+        });
+    });
+});
+</script> 
