@@ -4,15 +4,21 @@ namespace Logik\Integration\Exception;
 use Magento\Framework\Exception\AbstractAggregateException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Phrase;
+use Logik\Integration\Api\Data\ProductFailMessageInterface;
 
 class LogikCartException extends AbstractAggregateException
 {
+    /**
+     * Summary of errors
+     *
+     * @var LocalizedException[]
+     */
     protected $errors;
 
     /** Construct an exception containing all failed products
-     * @param string $message Top level message
-     * @param array  $errors  Array of errors containing problem SKU and its message
-     * @param int    $code    Error code, default: 400
+     * @param string                         $message Top level message
+     * @param ProductFailMessageInterface[]  $errors  Array of errors containing problem SKU and its message
+     * @param int                            $code    Error code, default: 400
      */
     public function __construct($message, array $errors = [], $code = 400)
     {
@@ -27,7 +33,7 @@ class LogikCartException extends AbstractAggregateException
             $this->errors[] = new LocalizedException(
                 new Phrase(
                     "An error occurred adding item %1 to cart %2",
-                    [$error['sku'], $error['message']]
+                    [$error->getSku(), $error->getMessage()]
                 )
             );
         }
@@ -35,7 +41,8 @@ class LogikCartException extends AbstractAggregateException
 
     /**
      * Get Errors attached to this exception, used by exception handlers
-     * @return [] array of LocalizedException
+     *
+     * @return LocalizedException[]
      */
     public function getErrors()
     {
