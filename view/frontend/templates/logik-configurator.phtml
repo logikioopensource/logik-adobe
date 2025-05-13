@@ -5,21 +5,23 @@
 ?>
 <div class="logik-configurator-wrapper">
     <!-- Static content that loads immediately -->
+     <script type="module" src="https://dev-shopify-tenant.dev.logik.io/ui/wc-build/logik-wc.es.js"></script>
     <div class="logik-configurator-static">
         <h2 class="logik-configurator-title">Product Configurator</h2>
         <div class="logik-configurator-description">
+            <p>This is a static content</p>
             <p>Configure your product using our interactive tool. Add items to your cart to see your configuration in action.</p>
-        </div>
-        <div class="logik-configurator-actions">
-            <button type="button" class="action primary logik-configurator-button">
-                <span>Start Configuration</span>
-            </button>
+            <logik-ui
+     product-id="01t5f000006sHgiAAE"
+     runtime-token="nVlaQVaLnfF-_XJK9gRact-eTIvHE01Tkw"
+     tenant-api-url="https://dev1.dev.logik.io"
+     />
         </div>
     </div>
 
     <!-- Dynamic content that loads with JavaScript -->
     <div data-bind="scope: 'logik-configurator'" class="logik-configurator-dynamic">
-        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!-- ko template: 'Logik_Integration/template/logik-configurator' --><!-- /ko -->
     </div>
 </div>
 

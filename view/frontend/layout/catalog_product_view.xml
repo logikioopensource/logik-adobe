@@ -8,8 +8,8 @@
                         <item name="components" xsi:type="array">
                             <item name="logik-configurator" xsi:type="array">
                                 <item name="component" xsi:type="string">Logik_Integration/js/logik-configurator</item>
-                                <item name="template" xsi:type="string">Logik_Integration/logik-configurator</item>
                                 <item name="displayArea" xsi:type="string">content</item>
+                                <item name="template" xsi:type="string">Logik_Integration/template/logik-configurator</item>
                             </item>
                         </item>
                     </argument>

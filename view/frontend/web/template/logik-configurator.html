@@ -1,8 +1,14 @@
-<div class="logik-configurator" data-bind="attr: {'data-cart-id': cartId}, style: getStyles(), css: getClasses()">
+<div class="logik-configurator">
     <div class="logik-configurator-content">
-        <!-- Add your custom content here -->
-        <div class="logik-configurator-message" data-bind="visible: cartId">
+        <!-- ko if: cartId -->
+        <div class="logik-configurator-message">
             Current Cart ID: <span data-bind="text: cartId"></span>
         </div>
+        <!-- /ko -->
+        <!-- ko ifnot: cartId -->
+        <div class="logik-configurator-message">
+            Loading cart information...
+        </div>
+        <!-- /ko -->
     </div>
 </div> 
