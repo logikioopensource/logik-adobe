@@ -7,7 +7,7 @@
         <item name="label" xsi:type="string" translate="true">Logik Configurator</item>
         <item name="config" xsi:type="array">
             <item name="component" xsi:type="string">Logik_Integration/js/logik-configurator</item>
-            <item name="template" xsi:type="string">Logik_Integration/logik-configurator</item>
+            <item name="template" xsi:type="string">Logik_Integration/template/logik-configurator</item>
             <item name="appearances" xsi:type="array">
                 <item name="default" xsi:type="array">
                     <item name="elements" xsi:type="array">
