@@ -3,9 +3,23 @@
  * @var \Magento\Framework\View\Element\Template $block
  */
 ?>
-<div class="logik-configurator">
+<div class="logik-configurator" data-bind="scope: 'logik-configurator'">
     <h2 class="logik-configurator-title">Logik Configurator</h2>
     <div class="logik-configurator-content">
         <p>Current Cart ID: <span data-bind="text: cartId"></span></p>
     </div>
 </div>
+
+<script type="text/x-magento-init">
+{
+    "*": {
+        "Magento_Ui/js/core/app": {
+            "components": {
+                "logik-configurator": {
+                    "component": "Logik_Integration/js/logik-configurator"
+                }
+            }
+        }
+    }
+}
+</script>
