@@ -19,4 +19,15 @@
     <type name="Magento\PageBuilder\Model\Config\ContentType\AdditionalData\Provider">
         <plugin name="logik_configurator_additional_data" type="Logik\Integration\Plugin\PageBuilder\AdditionalDataProvider" sortOrder="10"/>
     </type>
+    <type name="Magento\PageBuilder\Model\Config\ContentType\AdditionalData\Provider">
+        <arguments>
+            <argument name="additionalData" xsi:type="array">
+                <item name="logik_configurator" xsi:type="array">
+                    <item name="label" xsi:type="string">Logik Configurator</item>
+                    <item name="icon" xsi:type="string">icon-pagebuilder-text</item>
+                    <item name="menu_section" xsi:type="string">general</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
 </config>

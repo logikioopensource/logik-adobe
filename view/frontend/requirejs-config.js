@@ -9,8 +9,7 @@ var config = {
     },
     map: {
         '*': {
-            'Logik_Integration/js/content-type/logik-configurator': 'Logik_Integration/js/content-type/logik-configurator',
-            'Logik_Integration/js/content-type/logik-configurator/preview': 'Logik_Integration/js/content-type/logik-configurator/preview'
+            'Logik_Integration/js/content-type/logik-configurator/master': 'Logik_Integration/js/content-type/logik-configurator/master'
         }
     }
 }; 

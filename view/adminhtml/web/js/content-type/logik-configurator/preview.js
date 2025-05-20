@@ -24,5 +24,9 @@ define([
         return options;
     };
 
+    Preview.prototype.getPreview = function () {
+        return this.template;
+    };
+
     return Preview;
 }); 

@@ -5,7 +5,7 @@
           menu_section="general"
           component="Magento_PageBuilder/js/content-type"
           preview_component="Logik_Integration/js/content-type/logik-configurator/preview"
-          master_component="Magento_PageBuilder/js/content-type/master"
+          master_component="Logik_Integration/js/content-type/logik-configurator/master"
           form="pagebuilder_contenttype_form"
           icon="icon-pagebuilder-text"
           translate="label">
@@ -26,7 +26,8 @@
                        converter="Magento_PageBuilder/js/master-format/converter/configurable"
                        component="Magento_PageBuilder/js/content-type"
                        preview_component="Logik_Integration/js/content-type/logik-configurator/preview"
-                       master_template="Magento_PageBuilder/content-type/master/default"
+                       master_template="Logik_Integration/content-type/logik-configurator/master"
+                       preview_template="Logik_Integration/content-type/logik-configurator/preview"
                        menu_section="general">
                 <elements>
                     <element name="main">
