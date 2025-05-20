@@ -3,7 +3,7 @@
     <type name="logik_configurator"
           label="Logik Configurator"
           menu_section="general"
-          component="Logik_Integration/js/content-type/logik-configurator"
+          component="Magento_PageBuilder/js/content-type"
           preview_component="Logik_Integration/js/content-type/logik-configurator/preview"
           master_component="Magento_PageBuilder/js/content-type/master"
           form="pagebuilder_contenttype_form"
@@ -24,10 +24,9 @@
                        label="Default"
                        reader="Magento_PageBuilder/js/master-format/read/configurable"
                        converter="Magento_PageBuilder/js/master-format/converter/configurable"
-                       component="Magento_PageBuilder/js/content-type/text"
-                       preview_component="Magento_PageBuilder/js/content-type/text/preview"
+                       component="Magento_PageBuilder/js/content-type"
+                       preview_component="Logik_Integration/js/content-type/logik-configurator/preview"
                        master_template="Magento_PageBuilder/content-type/master/default"
-                       dataContent="text"
                        menu_section="general">
                 <elements>
                     <element name="main">

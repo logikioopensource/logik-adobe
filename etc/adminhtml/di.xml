@@ -16,4 +16,7 @@
             <argument name="storeManager" xsi:type="object">Magento\Store\Model\StoreManagerInterface\Proxy</argument>
         </arguments>
     </type>
+    <type name="Magento\PageBuilder\Model\Config\ContentType\AdditionalData\Provider">
+        <plugin name="logik_configurator_additional_data" type="Logik\Integration\Plugin\PageBuilder\AdditionalDataProvider" sortOrder="10"/>
+    </type>
 </config>
