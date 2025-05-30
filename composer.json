@@ -3,6 +3,7 @@
     "description": "Logik Magento 2 Packages",
     "type": "magento2-module",
     "license": "Proprietary",
+    "version": "0.1.0",
     "repositories": [
         {
             "type": "path",
