@@ -123,6 +123,7 @@ class Save extends Action
             // Grant required permissions
             $this->authorizationService->grantPermissions($integration->getId(), [
                 'Logik_Integration::add_to_cart',
+                'Magento_Catalog::catalog',
                 'Magento_Catalog::products'
             ]);
             $integration = $this->integrationService->get($integration->getId());
@@ -161,6 +162,7 @@ class Save extends Action
             // Grant required permissions
             $this->authorizationService->grantPermissions($integration->getId(), [
                 'Logik_Integration::add_to_cart',
+                'Magento_Catalog::catalog',
                 'Magento_Catalog::products'
             ]);
             

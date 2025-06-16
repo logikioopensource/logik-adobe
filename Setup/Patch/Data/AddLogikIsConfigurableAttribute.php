@@ -38,6 +38,17 @@ class AddLogikIsConfigurableAttribute implements DataPatchInterface, PatchRevert
             /** @var EavSetup $eavSetup */
             $eavSetup = $this->eavSetupFactory->create(['setup' => $this->moduleDataSetup]);
 
+            $this->logger->info('Checking if logik_is_configurable attribute exists');
+
+            // Check if attribute already exists
+            $attributeId = $eavSetup->getAttributeId(Product::ENTITY, 'logik_is_configurable');
+            
+            if ($attributeId) {
+                $this->logger->info('Attribute logik_is_configurable already exists with ID: ' . $attributeId);
+                $this->moduleDataSetup->endSetup();
+                return $this;
+            }
+
             $this->logger->info('Installing logik_is_configurable attribute');
 
             $eavSetup->addAttribute(
